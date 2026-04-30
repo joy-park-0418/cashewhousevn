@@ -40,23 +40,59 @@
         <p data-i18n="orderDesc1">카카오톡 / Zalo로 간편하게 주문 가능합니다</p>
         <p data-i18n="orderDesc2">매장 픽업 및 배달 모두 가능</p>
 
-        <div class="action-group">
-          <a class="action-button" href="#" aria-label="Zalo order button" data-i18n="zaloOrderButton">Zalo 주문하기</a>
-          <a class="action-button" href="#" aria-label="KakaoTalk order button" data-i18n="kakaoOrderButton">KakaoTalk 주문하기</a>
+        <div class="order-qr-grid">
+          <a class="order-qr-card" href="https://zaloapp.com/qr/p/io11slrx3wot" target="_blank" rel="noopener noreferrer" aria-label="Open Zalo QR link">
+            <span class="order-qr-card__channel">
+              <span class="order-qr-card__icon action-button--zalo" aria-hidden="true"></span>
+              <span class="order-qr-card__channel-text">Order via Zalo</span>
+            </span>
+            <img class="order-qr-card__image" src="images/zalo-qr-only.png" alt="Zalo QR code" />
+          </a>
+          <a class="order-qr-card" href="http://pf.kakao.com/_tyvTX" target="_blank" rel="noopener noreferrer" aria-label="Open KakaoTalk QR link">
+            <span class="order-qr-card__channel">
+              <span class="order-qr-card__icon action-button--kakao" aria-hidden="true"></span>
+              <span class="order-qr-card__channel-text">Order via KakaoTalk</span>
+            </span>
+            <img class="order-qr-card__image" src="images/kakaotalk-qr-only.png" alt="KakaoTalk QR code" />
+          </a>
         </div>
 
         <h3 class="sub-title" data-i18n="deliveryAppTitle">배달 어플 바로가기</h3>
         <div class="action-group">
-          <a class="action-button action-button--sub" href="#" aria-label="Grab link button" data-i18n="grabButton">Grab 바로가기</a>
-          <a class="action-button action-button--sub" href="#" aria-label="Delivery K link button" data-i18n="deliveryKButton">Delivery K 바로가기</a>
-          <a class="action-button action-button--sub" href="#" aria-label="Capichi link button" data-i18n="capichiButton">Capichi 바로가기</a>
+          <a class="action-button action-button--sub action-button--delivery action-button--grab" href="https://r.grab.com/g/6-20260430_190000_45DD73BD2A8040E2A69874FFFDF15FDF_MEXMPS-5-C7TFJN4TECD3TN" target="_blank" rel="noopener noreferrer" aria-label="Grab link button" data-i18n="grabButton">Grab 바로가기</a>
+          <a class="action-button action-button--sub action-button--delivery action-button--deliveryk" href="https://www.deliveryk.com/shop/13361" target="_blank" rel="noopener noreferrer" aria-label="Delivery K link button" data-i18n="deliveryKButton">Delivery K 바로가기</a>
+          <a class="action-button action-button--sub action-button--delivery action-button--capichi" href="https://capichideliveryapp.app.link/ad7INSy6K2b" target="_blank" rel="noopener noreferrer" aria-label="Capichi link button" data-i18n="capichiButton">Capichi 바로가기</a>
         </div>
       </section>
 
       <section class="store-section">
         <h2 class="section-title" data-i18n="storeTitle">Cashew House</h2>
-        <p data-i18n="storeAddress">23 Tran Ngoc Dien, Thao Dien, HCMC</p>
-        <p><strong data-i18n="businessHoursLabel">영업시간</strong><br />08:00 - 19:00</p>
+        <div class="store-layout">
+          <div class="store-info">
+            <p data-i18n="storeAddress">23 Tran Ngoc Dien, Thao Dien, HCMC</p>
+            <p>
+              <strong data-i18n="businessHoursLabel">영업시간</strong><br />
+              08:00 - 19:00<br />
+              <span class="store-hours-note" data-i18n="noClosedDaysLabel">휴무없음</span>
+            </p>
+            <p>
+              <a class="instagram-link" href="https://instagram.com/cashewhouse.vn" target="_blank" rel="noopener noreferrer" aria-label="Cashew House Instagram">
+                <span class="instagram-link__icon" aria-hidden="true"></span>
+                <span class="instagram-link__id">cashewhouse.vn</span>
+              </a>
+            </p>
+          </div>
+          <div class="store-map-wrap">
+            <iframe
+              class="store-map"
+              title="Cashew House location on Google Maps"
+              src="https://www.google.com/maps?q=23%20Tran%20Ngoc%20Dien,%20Thao%20Dien,%20Ho%20Chi%20Minh%20City&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -64,6 +100,11 @@
       <article class="menu-card">
         <div class="menu-card__image-wrap">
           <img class="menu-card__image" alt="" />
+          <div class="menu-card__image-nav" hidden>
+            <button type="button" class="menu-card__image-btn menu-card__image-btn--prev" aria-label="Previous image">◀</button>
+            <span class="menu-card__image-index" aria-live="polite"></span>
+            <button type="button" class="menu-card__image-btn menu-card__image-btn--next" aria-label="Next image">▶</button>
+          </div>
         </div>
         <div class="menu-card__body">
           <h3 class="menu-card__name"></h3>
