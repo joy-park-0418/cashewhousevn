@@ -248,6 +248,72 @@ const menuData = [
   { name: { en: "Cashew House Gift Set 66", ko: "캐슈하우스 선물세트 66" }, category: "giftSet", description: { en: "Gift set composed of Cashew Mini Scones, Cashew Crunch Toffee, 4 Cashew Chocolate Cookies, and 10 Madeleines.", ko: "캐슈미니스콘, 캐슈크런치토피, 캐슈초콜릿쿠키 4개, 마들렌 10개로 구성된 선물세트", vi: "Bo qua tang gom mini scone hat dieu, cashew crunch toffee, 4 cookie socola hat dieu va 10 banh madeleine.", ja: "カシューミニスコーン、カシュークランチトフィー、カシューチョコレートクッキー4個、マドレーヌ10個で構成されたギフトセット。", zh: "由腰果迷你司康、腰果脆太妃糖、4个腰果巧克力曲奇和10个玛德莲组成的礼盒。" }, priceVnd: 660000, nutsIncluded: true, eggIncluded: true, eggWashIncluded: false, image: "images/선물세트66-1.jpg", images: ["images/선물세트66-1.jpg", "images/선물세트66-2.jpg"], imagePositions: ["center 57%", "center 62%"] },
 ];
 
+const FIXED_MENU_KEYS = [
+  "milk-bread",
+  "sugar-toast",
+  "whole-wheat-bread",
+  "cashew-cinnamon-roll",
+  "condensed-milk-bread",
+  "salt-bread",
+  "cashew-salt-bread",
+  "red-bean-butter-salt-bread",
+  "green-onion-cream-cheese-salt-bread",
+  "corn-cheese-salt-bread",
+  "sriracha-mayo-sausage-salt-bread",
+  "cashew-bun",
+  "cream-cashew-bun",
+  "cashew-butter-cream-sand",
+  "cream-cheese-roll-bread",
+  "condensed-coffee-bread",
+  "blueberry-bread",
+  "sweet-potato-bread",
+  "cream-cheese-cashew-bread",
+  "cashew-strawberry-jam-toast",
+  "cranberry-cream-cheese-bread",
+  "cashew-chestnut-bread",
+  "sausage-bread",
+  "sweet-red-bean-bread",
+  "plain-bagel",
+  "salt-bagel",
+  "olive-cheese-bagel",
+  "potato-cheese-bagel",
+  "wine-fig-cream-cheese-sourdough",
+  "honey-sweet-potato-sourdough",
+  "chestnut-sourdough",
+  "garlic-cream-cheese-baguette",
+  "cashew-ball-cookie-large",
+  "cashew-ball-cookie-small",
+  "cashew-crunch-toffee",
+  "dark-chocolate-cashew-cookie",
+  "white-chocolate-cashew-cookie",
+  "caramel-cashew-rocher-chocolate",
+  "double-berry-jam-cookie",
+  "milk-ganache-cookie",
+  "cashew-cocoa-crispy-cookie",
+  "chocolate-cashew-mini-scone",
+  "cashew-mini-scone",
+  "chocolate-cashew-scone",
+  "cashew-nut-scone",
+  "earl-grey-madeleine",
+  "lemon-madeleine",
+  "chocolate-madeleine",
+  "cashew-gianduja-madeleine",
+  "matcha-white-chocolate-madeleine",
+  "cashew-carrot-cake",
+  "double-chocolate-muffin",
+  "cashew-basil-pesto",
+  "homemade-raspberry-jam",
+  "homemade-blueberry-jam",
+  "vietnam-premium-cashew-210g",
+  "cashew-house-gift-set-25",
+  "cashew-house-gift-set-30",
+  "cashew-house-gift-set-66",
+];
+
+menuData.forEach((menu, index) => {
+  menu.menuKey = FIXED_MENU_KEYS[index] ?? `menu-${index + 1}`;
+});
+
 const categories = [
   "loafBread",
   "artisanBread",
@@ -269,6 +335,9 @@ const menuCardTemplate = document.querySelector("#menuCardTemplate");
 
 let activeLanguage = "en";
 let activeCategory = categories[0];
+const INVENTORY_API_URL = "https://script.google.com/macros/s/AKfycbxpjTqVOzeSskfRaFxZZYwcALaou-Dt5_DJqNtrECD_IRw-fS15CGE9tR_PA7koQkg1/exec";
+const INVENTORY_REFRESH_MS = 30000;
+const inventoryStatusByKey = new Map();
 
 function formatVnd(price) {
   return `${price.toLocaleString("en-US")} VND`;
@@ -308,6 +377,82 @@ function getFlavorLabel(flavor) {
   return labels?.[activeLanguage] ?? flavor;
 }
 
+function getStockLabel(status) {
+  const labels = {
+    in_stock: {
+      en: "In Stock",
+      ko: "재고있음",
+      vi: "Còn hàng",
+      ja: "在庫あり",
+      zh: "有库存",
+    },
+    low_stock: {
+      en: "Low Stock",
+      ko: "품절임박",
+      vi: "Sắp hết hàng",
+      ja: "在庫わずか",
+      zh: "库存紧张",
+    },
+    sold_out: {
+      en: "Sold Out",
+      ko: "품절",
+      vi: "Hết hàng",
+      ja: "売り切れ",
+      zh: "已售罄",
+    },
+    unknown: {
+      en: "Stock Check",
+      ko: "재고확인",
+      vi: "Kiểm tra tồn kho",
+      ja: "在庫確認",
+      zh: "库存确认",
+    },
+  };
+  return labels[status]?.[activeLanguage] ?? labels[status]?.en ?? labels.unknown.en;
+}
+
+function normalizeStockStatus(value) {
+  const normalized = String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replaceAll("-", "_");
+  if (normalized === "in_stock" || normalized === "low_stock" || normalized === "sold_out") {
+    return normalized;
+  }
+  if (normalized === "out_of_stock" || normalized === "soldout") {
+    return "sold_out";
+  }
+  return "unknown";
+}
+
+function extractInventoryRows(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.rows)) return payload.rows;
+  if (Array.isArray(payload?.data)) return payload.data;
+  if (Array.isArray(payload?.items)) return payload.items;
+  return [];
+}
+
+async function refreshInventoryStatuses() {
+  if (!INVENTORY_API_URL) return;
+  try {
+    const response = await fetch(INVENTORY_API_URL, { cache: "no-store" });
+    if (!response.ok) return;
+    const payload = await response.json();
+    const rows = extractInventoryRows(payload);
+    inventoryStatusByKey.clear();
+    rows.forEach((row) => {
+      const menuKey = String(row?.menu_key ?? row?.menuKey ?? "").trim();
+      if (!menuKey) return;
+      const stockStatus = normalizeStockStatus(row?.stock_status ?? row?.stockStatus ?? row?.status);
+      inventoryStatusByKey.set(menuKey, stockStatus);
+    });
+    renderMenus();
+  } catch (_error) {
+    // Keep existing UI if inventory API is temporarily unavailable.
+  }
+}
+
 function updateStaticTexts() {
   htmlRoot.lang = activeLanguage;
   const textElements = document.querySelectorAll("[data-i18n]");
@@ -341,6 +486,7 @@ function renderMenus() {
   const items = menuData.filter((menu) => menu.category === activeCategory);
   items.forEach((menu) => {
     const card = menuCardTemplate.content.firstElementChild.cloneNode(true);
+    card.dataset.menuKey = menu.menuKey ?? "";
 
     // 일부 메뉴는 flavor 칩 줄바꿈으로 가격 baseline이 달라지는 현상이 있어,
     // 해당 메뉴만 flavors 영역 최소 높이를 고정해 가격 위치를 맞춥니다.
@@ -374,6 +520,7 @@ function renderMenus() {
     const allergyFields = card.querySelectorAll(".menu-card__allergy");
     const menuName = menu.name[activeLanguage] ?? menu.name.en;
     const menuDescription = menu.description[activeLanguage] ?? menu.description.en;
+    const stockStatus = normalizeStockStatus(inventoryStatusByKey.get(menu.menuKey));
     const imageList = Array.isArray(menu.images) && menu.images.length > 0 ? menu.images : [menu.image];
     const normalizedImageList = imageList.filter(Boolean);
     const fallbackImagePath = normalizedImageList[0] ?? "images/menu-01.png";
@@ -414,6 +561,11 @@ function renderMenus() {
 
     updateCardImage(0);
 
+    const stockBadge = document.createElement("p");
+    stockBadge.className = `menu-card__stock is-${stockStatus}`;
+    stockBadge.textContent = getStockLabel(stockStatus);
+    card.querySelector(".menu-card__body").insertBefore(stockBadge, card.querySelector(".menu-card__name"));
+
     card.querySelector(".menu-card__name").textContent = menuName;
     card.querySelector(".menu-card__description").textContent = menuDescription;
     flavorContainer.innerHTML = "";
@@ -444,3 +596,5 @@ languageSelect.addEventListener("change", (event) => {
 updateStaticTexts();
 renderTabs();
 renderMenus();
+refreshInventoryStatuses();
+setInterval(refreshInventoryStatuses, INVENTORY_REFRESH_MS);
