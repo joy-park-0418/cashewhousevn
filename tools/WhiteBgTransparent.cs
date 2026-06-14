@@ -7,16 +7,15 @@ using System.Runtime.InteropServices;
 
 /// <summary>
 /// 가장자리와 연결된 단색 배경 제거 (흰·밝은 회색 / 검정·어두운 회색 모두).
-/// 1) Edge flood: 저채도 밝은 영역 또는 저채도 어두운 영역을 테두리에서 채움 → 투명
-/// 2) Multi-pass grow: 투명과 맞닿은 할로 제거
-///
-/// 한계: 배경이 프레임 가장자리와 안 이어지면 제거 불가. 제품과 배경 색이 비슷하면 섞임.
+/// gentle 모드: 밀가루/밝은 토핑이 있는 제품용 — 배경만 제거, 빵 테두리 색 유지.
 ///
 /// Recompile:
 /// %WINDIR%\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /out:tools\WhiteBgTransparent.exe tools\WhiteBgTransparent.cs /reference:%WINDIR%\Microsoft.NET\Framework64\v4.0.30319\System.Drawing.dll
 /// </summary>
 class Program
 {
+    static bool gentleMode_;
+
     static void GetRgb(byte[] buf, int stride, int w, int h, int x, int y, out byte r, out byte g, out byte b)
     {
         int o = y * stride + x * 4;
@@ -30,75 +29,30 @@ class Program
         return Math.Max(r, Math.Max(g, b)) - Math.Min(r, Math.Min(g, b));
     }
 
-    /// 테두리에서 시작: 밝은 단색(흰·연회) 또는 어두운 단색(검·진회).
     static bool IsEdgeBackground(byte r, byte g, byte b)
     {
         double avg = (r + g + b) / 3.0;
         int sp = Spread(r, g, b);
-        bool lightBackdrop = avg >= 185 && sp <= 80;
+        if (gentleMode_)
+        {
+            return avg >= 248 && sp <= 22;
+        }
+        bool lightBackdrop = avg >= 200 && sp <= 58;
         bool darkBackdrop = avg <= 58 && sp <= 52;
         return lightBackdrop || darkBackdrop;
     }
 
-    /// 투명 영역 옆으로 한 겹씩: 밝은/어두운 할로 각각 완화된 기준.
     static bool IsGrowBackground(byte r, byte g, byte b)
     {
         double avg = (r + g + b) / 3.0;
         int sp = Spread(r, g, b);
-        bool light = avg >= 165 && sp <= 90;
+        if (gentleMode_)
+        {
+            return avg >= 246 && sp <= 28;
+        }
+        bool light = avg >= 175 && sp <= 68;
         bool dark = avg <= 85 && sp <= 62;
         return light || dark;
-    }
-
-    static bool IsNearWhiteFringe(byte r, byte g, byte b)
-    {
-        double avg = (r + g + b) / 3.0;
-        int sp = Spread(r, g, b);
-        return avg >= 235 && sp <= 45;
-    }
-
-    static bool HasTransparentNeighbor(byte[] buf, int stride, int w, int h, int x, int y)
-    {
-        for (int dy = -1; dy <= 1; dy++)
-        {
-            for (int dx = -1; dx <= 1; dx++)
-            {
-                if (dx == 0 && dy == 0) continue;
-                int nx = x + dx;
-                int ny = y + dy;
-                if (nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
-                int o = ny * stride + nx * 4;
-                if (buf[o + 3] == 0) return true;
-            }
-        }
-        return false;
-    }
-
-    static void RemoveLightFringe_(byte[] buf, int stride, int w, int h, int passes)
-    {
-        for (int pass = 0; pass < passes; pass++)
-        {
-            bool changed = false;
-            for (int y = 0; y < h; y++)
-            {
-                for (int x = 0; x < w; x++)
-                {
-                    int o = y * stride + x * 4;
-                    if (buf[o + 3] == 0) continue;
-                    byte r = buf[o + 2];
-                    byte g = buf[o + 1];
-                    byte b = buf[o];
-                    if (!IsNearWhiteFringe(r, g, b)) continue;
-                    if (!HasTransparentNeighbor(buf, stride, w, h, x, y)) continue;
-                    buf[o] = 0;
-                    buf[o + 1] = 0;
-                    buf[o + 2] = 0;
-                    buf[o + 3] = 0;
-                    changed = true;
-                }
-            }
-            if (!changed) break;
-        }
     }
 
     static void TryEnqueueEdge(byte[] buf, int stride, int w, int h, bool[] mark, Queue<int> q, int x, int y)
@@ -154,8 +108,24 @@ class Program
         }
     }
 
-    static void Process(string inputPath, string outputPath)
+    static void ClearMarkedPixels_(byte[] buf, int stride, bool[] mark, int w, int h)
     {
+        for (int p = 0; p < w * h; p++)
+        {
+            if (!mark[p]) continue;
+            int y = p / w;
+            int x = p % w;
+            int o = y * stride + x * 4;
+            buf[o] = 0;
+            buf[o + 1] = 0;
+            buf[o + 2] = 0;
+            buf[o + 3] = 0;
+        }
+    }
+
+    static void Process(string inputPath, string outputPath, bool gentle)
+    {
+        gentleMode_ = gentle;
         string tempPng = Path.Combine(Path.GetTempPath(), "wbgt-" + Guid.NewGuid().ToString("n") + ".png");
         using (var src = new Bitmap(inputPath))
         using (var bmp = new Bitmap(src.Width, src.Height, PixelFormat.Format32bppArgb))
@@ -199,21 +169,8 @@ class Program
                 TryEnqueueEdge(buf, stride, w, h, mark, q, x, y + 1);
             }
 
-            GrowBackgroundMask(buf, stride, w, h, mark, 48);
-
-            for (int p = 0; p < w * h; p++)
-            {
-                if (!mark[p]) continue;
-                int y = p / w;
-                int x = p % w;
-                int o = y * stride + x * 4;
-                buf[o] = 0;
-                buf[o + 1] = 0;
-                buf[o + 2] = 0;
-                buf[o + 3] = 0;
-            }
-
-            RemoveLightFringe_(buf, stride, w, h, 10);
+            GrowBackgroundMask(buf, stride, w, h, mark, gentle ? 6 : 40);
+            ClearMarkedPixels_(buf, stride, mark, w, h);
 
             Marshal.Copy(buf, 0, data.Scan0, bytes);
             bmp.UnlockBits(data);
@@ -227,13 +184,25 @@ class Program
     {
         if (args.Length < 1)
         {
-            Console.Error.WriteLine("Usage: WhiteBgTransparent.exe <input.png> [output.png]  (removes edge-connected light OR dark solid backdrops)");
+            Console.Error.WriteLine("Usage: WhiteBgTransparent.exe <input.png> [output.png] [gentle]");
             Environment.Exit(1);
             return;
         }
         string input = args[0];
-        string output = args.Length >= 2 ? args[1] : input;
-        Process(input, output);
-        Console.WriteLine("Wrote " + output);
+        string output = args[0];
+        bool gentle = false;
+
+        for (int i = 1; i < args.Length; i++)
+        {
+            if (args[i] == "gentle")
+            {
+                gentle = true;
+                continue;
+            }
+            output = args[i];
+        }
+
+        Process(input, output, gentle);
+        Console.WriteLine("Wrote " + output + (gentle ? " (gentle)" : ""));
     }
 }
