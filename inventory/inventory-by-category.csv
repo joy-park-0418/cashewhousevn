@@ -1,0 +1,74 @@
+menu_key,menu_name_en,stock_status
+,--- Loaf Bread ---,
+milk-bread,Milk Bread,in_stock
+sugar-toast,Sugar Toast,sold_out
+whole-wheat-bread,Whole Wheat Bread,in_stock
+cashew-strawberry-jam-toast,Cashew Strawberry Jam Toast,in_stock
+cashew-chestnut-bread,Cashew Chestnut Bread,in_stock
+,--- Artisan Bread ---,
+wine-fig-cream-cheese-sourdough,Wine Fig Cream Cheese Sourdough,in_stock
+honey-sweet-potato-sourdough,Honey Sweet Potato Sourdough,in_stock
+chestnut-sourdough,Chestnut Sourdough,sold_out
+chocolate-baguette,Chocolate Baguette,in_stock
+,--- Salt Bread & Bagel ---,
+salt-bread,Salt Bread,in_stock
+cashew-salt-bread,Cashew Salt Bread,sold_out
+red-bean-butter-salt-bread,Red Bean Butter Salt Bread,in_stock
+green-onion-cream-cheese-salt-bread,Green Onion Cream Cheese Salt Bread,in_stock
+corn-cheese-salt-bread,Corn Cheese Salt Bread,sold_out
+sriracha-mayo-sausage-salt-bread,Sriracha Mayo Sausage Salt Bread,sold_out
+plain-bagel,Plain Bagel,in_stock
+salt-bagel,Salt Bagel,in_stock
+olive-cheese-bagel,Olive Cheese Bagel,in_stock
+potato-cheese-bagel,Potato Cheese Bagel,sold_out
+,--- Sweet Bread ---,
+cashew-cinnamon-roll,Cashew Cinnamon Roll,in_stock
+condensed-milk-bread,Condensed Milk Bread,in_stock
+cashew-bun,Cashew Bun,in_stock
+cream-cashew-bun,Cream Cashew Bun,in_stock
+cashew-butter-cream-sand,Cashew Butter Cream Sand,in_stock
+cream-cheese-roll-bread,Cream Cheese Roll Bread,in_stock
+condensed-coffee-bread,Condensed Coffee Bread,in_stock
+blueberry-bread,Blueberry Bread,in_stock
+sweet-potato-bread,Sweet Potato Bread,in_stock
+cream-cheese-cashew-bread,Cream Cheese Cashew Bread,in_stock
+cranberry-cream-cheese-bread,Cranberry Cream Cheese Bread,in_stock
+sausage-bread,Sausage Bread,in_stock
+sweet-red-bean-bread,Sweet Red Bean Bread,in_stock
+butter-mochi,Butter Mochi,in_stock
+black-butter-mochi,Black Sesame Butter Mochi,sold_out
+garlic-cream-cheese-baguette,Garlic Cream Cheese Baguette,in_stock
+shrimp-baguette,Shrimp Baguette,in_stock
+,--- Cookie & Small Sweets ---,
+cashew-ball-cookie-large,Cashew Ball Cookie (Large),in_stock
+cashew-ball-cookie-small,Cashew Ball Cookie (Small),in_stock
+cashew-crunch-toffee,Cashew Crunch Toffee,in_stock
+dark-chocolate-cashew-cookie,Dark Chocolate Cashew Cookie,in_stock
+white-chocolate-cashew-cookie,White Chocolate Cashew Cookie,in_stock
+caramel-cashew-rocher-chocolate,Caramel Cashew Rocher Chocolate,in_stock
+double-berry-jam-cookie,Double Berry Jam Cookie,sold_out
+milk-ganache-cookie,Milk Ganache Cookie,in_stock
+cashew-cocoa-crispy-cookie,Cashew Cocoa Crispy Cookie,in_stock
+,--- Scone ---,
+chocolate-cashew-mini-scone,Chocolate Cashew Mini Scone,in_stock
+cashew-mini-scone,Cashew Mini Scone,in_stock
+chocolate-cashew-scone,Chocolate Cashew Scone,in_stock
+cashew-nut-scone,Cashew Nut Scone,in_stock
+,--- Cake & Madeleine ---,
+earl-grey-madeleine,Earl Grey Madeleine,in_stock
+lemon-madeleine,Lemon Madeleine,in_stock
+chocolate-madeleine,Chocolate Madeleine,in_stock
+cashew-gianduja-madeleine,Cashew Gianduja Madeleine,in_stock
+matcha-white-chocolate-madeleine,Matcha White Chocolate Madeleine,in_stock
+cashew-carrot-cake,Cashew Carrot Cake,in_stock
+double-chocolate-muffin,Double Chocolate Muffin,in_stock
+,--- Gift Set ---,
+cashew-house-gift-set-25,Cashew House Gift Set 25,in_stock
+cashew-house-gift-set-30,Cashew House Gift Set 30,in_stock
+cashew-house-gift-set-66,Cashew House Gift Set 66,in_stock
+,--- Jam & Spread ---,
+cashew-basil-pesto,Cashew Basil Pesto,in_stock
+homemade-raspberry-jam,Homemade Raspberry Jam,sold_out
+homemade-blueberry-jam,Homemade Blueberry Jam,sold_out
+,--- Cashew Product ---,
+vietnam-premium-cashew-210g,Vietnam Premium Cashew 210g,in_stock
