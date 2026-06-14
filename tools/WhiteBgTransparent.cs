@@ -35,7 +35,7 @@ class Program
     {
         double avg = (r + g + b) / 3.0;
         int sp = Spread(r, g, b);
-        bool lightBackdrop = avg >= 200 && sp <= 58;
+        bool lightBackdrop = avg >= 185 && sp <= 80;
         bool darkBackdrop = avg <= 58 && sp <= 52;
         return lightBackdrop || darkBackdrop;
     }
@@ -45,9 +45,57 @@ class Program
     {
         double avg = (r + g + b) / 3.0;
         int sp = Spread(r, g, b);
-        bool light = avg >= 175 && sp <= 68;
+        bool light = avg >= 165 && sp <= 90;
         bool dark = avg <= 85 && sp <= 62;
         return light || dark;
+    }
+
+    static bool IsNearWhiteFringe(byte r, byte g, byte b)
+    {
+        double avg = (r + g + b) / 3.0;
+        int sp = Spread(r, g, b);
+        return avg >= 195 && sp <= 95;
+    }
+
+    static bool HasTransparentNeighbor(byte[] buf, int stride, int w, int h, int x, int y)
+    {
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                if (dx == 0 && dy == 0) continue;
+                int nx = x + dx;
+                int ny = y + dy;
+                if (nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
+                int o = ny * stride + nx * 4;
+                if (buf[o + 3] == 0) return true;
+            }
+        }
+        return false;
+    }
+
+    static void RemoveLightFringe_(byte[] buf, int stride, int w, int h, int passes)
+    {
+        for (int pass = 0; pass < passes; pass++)
+        {
+            bool changed = false;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    int o = y * stride + x * 4;
+                    if (buf[o + 3] == 0) continue;
+                    byte r = buf[o + 2];
+                    byte g = buf[o + 1];
+                    byte b = buf[o];
+                    if (!IsNearWhiteFringe(r, g, b)) continue;
+                    if (!HasTransparentNeighbor(buf, stride, w, h, x, y)) continue;
+                    buf[o + 3] = 0;
+                    changed = true;
+                }
+            }
+            if (!changed) break;
+        }
     }
 
     static void TryEnqueueEdge(byte[] buf, int stride, int w, int h, bool[] mark, Queue<int> q, int x, int y)
@@ -148,7 +196,7 @@ class Program
                 TryEnqueueEdge(buf, stride, w, h, mark, q, x, y + 1);
             }
 
-            GrowBackgroundMask(buf, stride, w, h, mark, 40);
+            GrowBackgroundMask(buf, stride, w, h, mark, 48);
 
             for (int p = 0; p < w * h; p++)
             {
@@ -158,6 +206,8 @@ class Program
                 int o = y * stride + x * 4;
                 buf[o + 3] = 0;
             }
+
+            RemoveLightFringe_(buf, stride, w, h, 6);
 
             Marshal.Copy(buf, 0, data.Scan0, bytes);
             bmp.UnlockBits(data);
