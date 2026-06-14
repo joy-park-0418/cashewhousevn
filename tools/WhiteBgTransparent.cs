@@ -54,7 +54,7 @@ class Program
     {
         double avg = (r + g + b) / 3.0;
         int sp = Spread(r, g, b);
-        return avg >= 195 && sp <= 95;
+        return avg >= 235 && sp <= 45;
     }
 
     static bool HasTransparentNeighbor(byte[] buf, int stride, int w, int h, int x, int y)
@@ -90,6 +90,9 @@ class Program
                     byte b = buf[o];
                     if (!IsNearWhiteFringe(r, g, b)) continue;
                     if (!HasTransparentNeighbor(buf, stride, w, h, x, y)) continue;
+                    buf[o] = 0;
+                    buf[o + 1] = 0;
+                    buf[o + 2] = 0;
                     buf[o + 3] = 0;
                     changed = true;
                 }
@@ -204,10 +207,13 @@ class Program
                 int y = p / w;
                 int x = p % w;
                 int o = y * stride + x * 4;
+                buf[o] = 0;
+                buf[o + 1] = 0;
+                buf[o + 2] = 0;
                 buf[o + 3] = 0;
             }
 
-            RemoveLightFringe_(buf, stride, w, h, 6);
+            RemoveLightFringe_(buf, stride, w, h, 10);
 
             Marshal.Copy(buf, 0, data.Scan0, bytes);
             bmp.UnlockBits(data);
