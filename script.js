@@ -43,6 +43,7 @@
     cartClear: "Clear all",
     cartCopy: "Copy order",
     cartCopySuccess: "Order copied!",
+    cartQtyUnit: "pcs",
     cartFlavorLabel: "Flavor",
     cartSoldOutHint: "Sold out",
     cartDecrease: "Decrease quantity",
@@ -92,6 +93,7 @@
     cartClear: "전체 삭제",
     cartCopy: "주문 내용 복사",
     cartCopySuccess: "주문 내용이 복사되었습니다",
+    cartQtyUnit: "개",
     cartFlavorLabel: "맛",
     cartSoldOutHint: "품절",
     cartDecrease: "수량 줄이기",
@@ -141,6 +143,7 @@
     cartClear: "Xóa tất cả",
     cartCopy: "Sao chép đơn",
     cartCopySuccess: "Đã sao chép đơn hàng",
+    cartQtyUnit: "cái",
     cartFlavorLabel: "Hương vị",
     cartSoldOutHint: "Hết hàng",
     cartDecrease: "Giảm số lượng",
@@ -190,6 +193,7 @@
     cartClear: "すべて削除",
     cartCopy: "注文内容をコピー",
     cartCopySuccess: "注文内容をコピーしました",
+    cartQtyUnit: "個",
     cartFlavorLabel: "味",
     cartSoldOutHint: "売り切れ",
     cartDecrease: "数量を減らす",
@@ -239,6 +243,7 @@
     cartClear: "全部清空",
     cartCopy: "复制订单",
     cartCopySuccess: "订单内容已复制",
+    cartQtyUnit: "个",
     cartFlavorLabel: "口味",
     cartSoldOutHint: "已售罄",
     cartDecrease: "减少数量",
@@ -568,26 +573,35 @@ function getMenuDisplayName(menu) {
   return menu.name[activeLanguage] ?? menu.name.en ?? menu.menuKey;
 }
 
+function formatCartQuantity(quantity) {
+  const unit = t("cartQtyUnit");
+  if (activeLanguage === "en" || activeLanguage === "vi") {
+    return `[${quantity} ${unit}]`;
+  }
+  return `[${quantity}${unit}]`;
+}
+
 function buildOrderText() {
-  const lines = cartItems.map((item) => {
+  const lines = cartItems.map((item, index) => {
     const menu = findMenuByKey(item.menuKey);
     if (!menu) return null;
     let label = getMenuDisplayName(menu);
     if (item.flavor) {
-      label += ` (${getFlavorLabel(item.flavor)})`;
+      label += ` - ${getFlavorLabel(item.flavor)}`;
     }
     const lineTotal = menu.priceVnd * item.quantity;
-    return `- ${label} x${item.quantity} - ${formatVnd(lineTotal)}`;
+    return `${index + 1}. ${label} ${formatCartQuantity(item.quantity)} · ${formatVnd(lineTotal)}`;
   }).filter(Boolean);
 
   if (lines.length === 0) return "";
 
   return [
     `[${t("brandName")} - ${t("cartTitle")}]`,
+    "",
     ...lines,
     "",
     `${t("cartTotal")}: ${formatVnd(getCartTotalVnd())}`,
-  ].join("\n");
+  ].join("\r\n");
 }
 
 async function copyOrderText() {
