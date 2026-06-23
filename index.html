@@ -116,10 +116,37 @@
             <p class="menu-card__allergy"></p>
             <p class="menu-card__allergy"></p>
           </div>
+          <div class="menu-card__actions">
+            <select class="menu-card__flavor-select" hidden></select>
+            <button type="button" class="menu-card__add-btn"></button>
+          </div>
         </div>
       </article>
     </template>
 
-    <script src="script.js?v=20260614-2"></script>
+    <div id="cartOverlay" class="cart-overlay" hidden></div>
+    <aside id="cartPanel" class="cart-panel" aria-hidden="true" aria-labelledby="cartPanelTitle">
+      <div class="cart-panel__header">
+        <h2 id="cartPanelTitle" class="cart-panel__title" data-i18n="cartTitle">My Order</h2>
+        <button type="button" id="cartCloseBtn" class="cart-panel__close" aria-label="Close">×</button>
+      </div>
+      <p id="cartEmptyMsg" class="cart-panel__empty" data-i18n="cartEmpty" hidden></p>
+      <ul id="cartItems" class="cart-panel__items"></ul>
+      <div class="cart-panel__footer">
+        <p id="cartTotal" class="cart-panel__total"></p>
+        <div class="cart-panel__actions">
+          <button type="button" id="cartCopyBtn" class="cart-panel__btn cart-panel__btn--primary" data-i18n="cartCopy">Copy order</button>
+          <button type="button" id="cartClearBtn" class="cart-panel__btn cart-panel__btn--ghost" data-i18n="cartClear">Clear all</button>
+        </div>
+      </div>
+    </aside>
+    <button type="button" id="cartFab" class="cart-fab" hidden>
+      <span class="cart-fab__icon" aria-hidden="true">🛒</span>
+      <span id="cartFabCount" class="cart-fab__count">0</span>
+      <span class="cart-fab__label" data-i18n="cartTitle">My Order</span>
+    </button>
+    <p id="cartToast" class="cart-toast" role="status" aria-live="polite" hidden></p>
+
+    <script src="script.js?v=20260614-3"></script>
   </body>
 </html>

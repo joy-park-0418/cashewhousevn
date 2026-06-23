@@ -34,6 +34,19 @@
     },
     included: "Included",
     excluded: "Excluded",
+    cartTitle: "My Order",
+    cartEmpty: "Your cart is empty. Add items from the menu.",
+    cartAdd: "Add to cart",
+    cartAdded: "Added to cart",
+    cartRemove: "Remove",
+    cartTotal: "Total",
+    cartClear: "Clear all",
+    cartCopy: "Copy order",
+    cartCopySuccess: "Order copied!",
+    cartFlavorLabel: "Flavor",
+    cartSoldOutHint: "Sold out",
+    cartDecrease: "Decrease quantity",
+    cartIncrease: "Increase quantity",
   },
   ko: {
     languageLabel: "언어",
@@ -70,6 +83,19 @@
     },
     included: "포함",
     excluded: "미포함",
+    cartTitle: "주문 목록",
+    cartEmpty: "장바구니가 비어 있습니다. 메뉴에서 담아 주세요.",
+    cartAdd: "담기",
+    cartAdded: "장바구니에 담았습니다",
+    cartRemove: "삭제",
+    cartTotal: "합계",
+    cartClear: "전체 삭제",
+    cartCopy: "주문 내용 복사",
+    cartCopySuccess: "주문 내용이 복사되었습니다",
+    cartFlavorLabel: "맛",
+    cartSoldOutHint: "품절",
+    cartDecrease: "수량 줄이기",
+    cartIncrease: "수량 늘리기",
   },
   vi: {
     languageLabel: "Ngôn ngữ",
@@ -106,6 +132,19 @@
     },
     included: "Có",
     excluded: "Không",
+    cartTitle: "Đơn hàng",
+    cartEmpty: "Giỏ hàng trống. Hãy thêm món từ thực đơn.",
+    cartAdd: "Thêm",
+    cartAdded: "Đã thêm vào giỏ",
+    cartRemove: "Xóa",
+    cartTotal: "Tổng",
+    cartClear: "Xóa tất cả",
+    cartCopy: "Sao chép đơn",
+    cartCopySuccess: "Đã sao chép đơn hàng",
+    cartFlavorLabel: "Hương vị",
+    cartSoldOutHint: "Hết hàng",
+    cartDecrease: "Giảm số lượng",
+    cartIncrease: "Tăng số lượng",
   },
   ja: {
     languageLabel: "言語",
@@ -142,6 +181,19 @@
     },
     included: "含む",
     excluded: "含まない",
+    cartTitle: "注文リスト",
+    cartEmpty: "カートは空です。メニューから追加してください。",
+    cartAdd: "追加",
+    cartAdded: "カートに追加しました",
+    cartRemove: "削除",
+    cartTotal: "合計",
+    cartClear: "すべて削除",
+    cartCopy: "注文内容をコピー",
+    cartCopySuccess: "注文内容をコピーしました",
+    cartFlavorLabel: "味",
+    cartSoldOutHint: "売り切れ",
+    cartDecrease: "数量を減らす",
+    cartIncrease: "数量を増やす",
   },
   zh: {
     languageLabel: "语言",
@@ -178,6 +230,19 @@
     },
     included: "含有",
     excluded: "不含",
+    cartTitle: "订单列表",
+    cartEmpty: "购物车为空，请从菜单中添加商品。",
+    cartAdd: "加入",
+    cartAdded: "已加入购物车",
+    cartRemove: "删除",
+    cartTotal: "合计",
+    cartClear: "全部清空",
+    cartCopy: "复制订单",
+    cartCopySuccess: "订单内容已复制",
+    cartFlavorLabel: "口味",
+    cartSoldOutHint: "已售罄",
+    cartDecrease: "减少数量",
+    cartIncrease: "增加数量",
   },
 };
 
@@ -340,12 +405,26 @@ const languageSelect = document.querySelector("#languageSelect");
 const categoryTabs = document.querySelector("#categoryTabs");
 const menuGrid = document.querySelector("#menuGrid");
 const menuCardTemplate = document.querySelector("#menuCardTemplate");
+const cartOverlay = document.querySelector("#cartOverlay");
+const cartPanel = document.querySelector("#cartPanel");
+const cartCloseBtn = document.querySelector("#cartCloseBtn");
+const cartEmptyMsg = document.querySelector("#cartEmptyMsg");
+const cartItemsEl = document.querySelector("#cartItems");
+const cartTotalEl = document.querySelector("#cartTotal");
+const cartCopyBtn = document.querySelector("#cartCopyBtn");
+const cartClearBtn = document.querySelector("#cartClearBtn");
+const cartFab = document.querySelector("#cartFab");
+const cartFabCount = document.querySelector("#cartFabCount");
+const cartToast = document.querySelector("#cartToast");
 
 let activeLanguage = "en";
 let activeCategory = categories[0];
 const INVENTORY_API_URL = "https://script.google.com/macros/s/AKfycbxpjTqVOzeSskfRaFxZZYwcALaou-Dt5_DJqNtrECD_IRw-fS15CGE9tR_PA7koQkg1/exec";
 const INVENTORY_REFRESH_MS = 30000;
+const CART_STORAGE_KEY = "cashew-house-cart-v1";
 const inventoryStatusByKey = new Map();
+let cartItems = [];
+let cartToastTimer = null;
 
 function formatVnd(price) {
   return `${price.toLocaleString("en-US")} VND`;
@@ -410,6 +489,231 @@ function getStockLabel(status) {
     },
   };
   return labels[status]?.[activeLanguage] ?? labels[status]?.en ?? labels.unknown.en;
+}
+
+function findMenuByKey(menuKey) {
+  return menuData.find((menu) => menu.menuKey === menuKey);
+}
+
+function getCartLineKey(menuKey, flavor) {
+  return flavor ? `${menuKey}::${flavor}` : menuKey;
+}
+
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    cartItems = Array.isArray(parsed)
+      ? parsed.filter((item) => item?.menuKey && Number(item.quantity) > 0)
+      : [];
+  } catch (_error) {
+    cartItems = [];
+  }
+}
+
+function saveCart() {
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+}
+
+function getCartTotalQuantity() {
+  return cartItems.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function getCartTotalVnd() {
+  return cartItems.reduce((sum, item) => {
+    const menu = findMenuByKey(item.menuKey);
+    if (!menu) return sum;
+    return sum + menu.priceVnd * item.quantity;
+  }, 0);
+}
+
+function addToCart(menuKey, flavor = null) {
+  const stockStatus = normalizeStockStatus(inventoryStatusByKey.get(menuKey));
+  if (stockStatus === "sold_out") return;
+
+  const lineKey = getCartLineKey(menuKey, flavor);
+  const existing = cartItems.find((item) => getCartLineKey(item.menuKey, item.flavor) === lineKey);
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cartItems.push({ menuKey, flavor, quantity: 1 });
+  }
+  saveCart();
+  renderCart();
+  updateCartFab();
+}
+
+function setCartQuantity(menuKey, flavor, quantity) {
+  const lineKey = getCartLineKey(menuKey, flavor);
+  const item = cartItems.find((entry) => getCartLineKey(entry.menuKey, entry.flavor) === lineKey);
+  if (!item) return;
+  if (quantity <= 0) {
+    cartItems = cartItems.filter((entry) => getCartLineKey(entry.menuKey, entry.flavor) !== lineKey);
+  } else {
+    item.quantity = quantity;
+  }
+  saveCart();
+  renderCart();
+  updateCartFab();
+}
+
+function clearCart() {
+  cartItems = [];
+  saveCart();
+  renderCart();
+  updateCartFab();
+}
+
+function getMenuDisplayName(menu) {
+  return menu.name[activeLanguage] ?? menu.name.en ?? menu.menuKey;
+}
+
+function buildOrderText() {
+  const lines = cartItems.map((item) => {
+    const menu = findMenuByKey(item.menuKey);
+    if (!menu) return null;
+    let label = getMenuDisplayName(menu);
+    if (item.flavor) {
+      label += ` (${getFlavorLabel(item.flavor)})`;
+    }
+    const lineTotal = menu.priceVnd * item.quantity;
+    return `- ${label} x${item.quantity} - ${formatVnd(lineTotal)}`;
+  }).filter(Boolean);
+
+  if (lines.length === 0) return "";
+
+  return [
+    `[${t("brandName")} - ${t("cartTitle")}]`,
+    ...lines,
+    "",
+    `${t("cartTotal")}: ${formatVnd(getCartTotalVnd())}`,
+  ].join("\n");
+}
+
+async function copyOrderText() {
+  const text = buildOrderText();
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    showCartToast(t("cartCopySuccess"));
+  } catch (_error) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    document.body.append(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+    showCartToast(t("cartCopySuccess"));
+  }
+}
+
+function showCartToast(message) {
+  if (!cartToast) return;
+  cartToast.textContent = message;
+  cartToast.hidden = false;
+  clearTimeout(cartToastTimer);
+  cartToastTimer = setTimeout(() => {
+    cartToast.hidden = true;
+  }, 2200);
+}
+
+function openCart() {
+  cartPanel?.classList.add("is-open");
+  cartOverlay?.removeAttribute("hidden");
+  cartPanel?.setAttribute("aria-hidden", "false");
+  document.body.classList.add("cart-open");
+}
+
+function closeCart() {
+  cartPanel?.classList.remove("is-open");
+  cartOverlay?.setAttribute("hidden", "");
+  cartPanel?.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("cart-open");
+}
+
+function updateCartFab() {
+  if (!cartFab || !cartFabCount) return;
+  const totalQty = getCartTotalQuantity();
+  cartFabCount.textContent = String(totalQty);
+  cartFab.hidden = false;
+  cartFab.classList.toggle("has-items", totalQty > 0);
+}
+
+function renderCart() {
+  if (!cartItemsEl || !cartTotalEl || !cartEmptyMsg) return;
+
+  cartItemsEl.innerHTML = "";
+  const isEmpty = cartItems.length === 0;
+  cartEmptyMsg.hidden = !isEmpty;
+  cartTotalEl.hidden = isEmpty;
+  cartCopyBtn.disabled = isEmpty;
+  cartClearBtn.disabled = isEmpty;
+
+  if (isEmpty) {
+    cartTotalEl.textContent = "";
+    return;
+  }
+
+  cartItems.forEach((item) => {
+    const menu = findMenuByKey(item.menuKey);
+    if (!menu) return;
+
+    const row = document.createElement("li");
+    row.className = "cart-item";
+
+    const info = document.createElement("div");
+    info.className = "cart-item__info";
+
+    const name = document.createElement("p");
+    name.className = "cart-item__name";
+    name.textContent = getMenuDisplayName(menu);
+
+    const meta = document.createElement("p");
+    meta.className = "cart-item__meta";
+    if (item.flavor) {
+      meta.textContent = `${getFlavorIcon(item.flavor)} ${getFlavorLabel(item.flavor)} · ${formatVnd(menu.priceVnd)}`;
+    } else {
+      meta.textContent = formatVnd(menu.priceVnd);
+    }
+
+    info.append(name, meta);
+
+    const controls = document.createElement("div");
+    controls.className = "cart-item__controls";
+
+    const decreaseBtn = document.createElement("button");
+    decreaseBtn.type = "button";
+    decreaseBtn.className = "cart-item__qty-btn";
+    decreaseBtn.setAttribute("aria-label", t("cartDecrease"));
+    decreaseBtn.textContent = "−";
+    decreaseBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, item.quantity - 1));
+
+    const qty = document.createElement("span");
+    qty.className = "cart-item__qty";
+    qty.textContent = String(item.quantity);
+
+    const increaseBtn = document.createElement("button");
+    increaseBtn.type = "button";
+    increaseBtn.className = "cart-item__qty-btn";
+    increaseBtn.setAttribute("aria-label", t("cartIncrease"));
+    increaseBtn.textContent = "+";
+    increaseBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, item.quantity + 1));
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "cart-item__remove";
+    removeBtn.textContent = t("cartRemove");
+    removeBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, 0));
+
+    controls.append(decreaseBtn, qty, increaseBtn, removeBtn);
+    row.append(info, controls);
+    cartItemsEl.append(row);
+  });
+
+  cartTotalEl.textContent = `${t("cartTotal")}: ${formatVnd(getCartTotalVnd())}`;
 }
 
 function normalizeStockStatus(value) {
@@ -586,6 +890,35 @@ function renderMenus() {
     allergyFields[1].innerHTML = `EGG <span class="allergy-status ${menu.eggIncluded ? "is-included" : "is-excluded"}" aria-label="${toIncludedText(menu.eggIncluded)}">${getAllergyEmoji(menu.eggIncluded)}</span>`;
     const hasEggWash = menu.eggWashIncluded ?? false;
     allergyFields[2].innerHTML = `EGG WASH <span class="allergy-status ${hasEggWash ? "is-included" : "is-excluded"}" aria-label="${toIncludedText(hasEggWash)}">${getAllergyEmoji(hasEggWash)}</span>`;
+
+    const flavorSelect = card.querySelector(".menu-card__flavor-select");
+    const addButton = card.querySelector(".menu-card__add-btn");
+    if (Array.isArray(menu.flavors) && menu.flavors.length > 0 && flavorSelect) {
+      flavorSelect.hidden = false;
+      flavorSelect.setAttribute("aria-label", t("cartFlavorLabel"));
+      flavorSelect.innerHTML = "";
+      menu.flavors.forEach((flavor) => {
+        const option = document.createElement("option");
+        option.value = flavor;
+        option.textContent = `${getFlavorIcon(flavor)} ${getFlavorLabel(flavor)}`;
+        flavorSelect.append(option);
+      });
+    } else if (flavorSelect) {
+      flavorSelect.hidden = true;
+      flavorSelect.innerHTML = "";
+    }
+
+    if (addButton) {
+      addButton.textContent = t("cartAdd");
+      addButton.disabled = stockStatus === "sold_out";
+      addButton.title = stockStatus === "sold_out" ? t("cartSoldOutHint") : "";
+      addButton.addEventListener("click", () => {
+        const flavor = flavorSelect && !flavorSelect.hidden ? flavorSelect.value : null;
+        addToCart(menu.menuKey, flavor);
+        showCartToast(t("cartAdded"));
+      });
+    }
+
     menuGrid.append(card);
   });
 }
@@ -595,10 +928,20 @@ languageSelect.addEventListener("change", (event) => {
   updateStaticTexts();
   renderTabs();
   renderMenus();
+  renderCart();
 });
 
+cartFab?.addEventListener("click", openCart);
+cartCloseBtn?.addEventListener("click", closeCart);
+cartOverlay?.addEventListener("click", closeCart);
+cartClearBtn?.addEventListener("click", clearCart);
+cartCopyBtn?.addEventListener("click", copyOrderText);
+
+loadCart();
 updateStaticTexts();
 renderTabs();
 renderMenus();
+renderCart();
+updateCartFab();
 refreshInventoryStatuses();
 setInterval(refreshInventoryStatuses, INVENTORY_REFRESH_MS);
