@@ -111,6 +111,9 @@ const MENU_CATALOG = [
   ["jamSpread", "homemade-raspberry-jam", "Homemade Raspberry Jam"],
   ["jamSpread", "homemade-blueberry-jam", "Homemade Blueberry Jam"],
   ["cashewProduct", "vietnam-premium-cashew-210g", "Vietnam Premium Cashew 210g"],
+  ["cashewProduct", "nuridal-cashew-nut-70g", "NURIDAL Cashew Nut 70g"],
+  ["cashewProduct", "nuridal-cashew-nut-250g", "NURIDAL Cashew Nut 250g"],
+  ["cashewProduct", "nuridal-cashew-nut-500g", "NURIDAL Cashew Nut 500g"],
 ];
 
 function getSpreadsheet_() {

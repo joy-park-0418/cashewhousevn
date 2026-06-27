@@ -316,6 +316,9 @@ const menuData = [
   { name: { en: "Homemade Blueberry Jam", ko: "홈메이드 블루베리잼" }, category: "jamSpread", description: { en: "Homemade blueberry jam with rich blueberry flavor (blueberry content about 70%, mini size available).", ko: "홈메이드 방식으로 만든 블루베리 맛이 진한 블루베리잼 (블루베리 함량 약 70%, 미니사이즈 55,000)", vi: "Mut blueberry thu cong voi huong vi blueberry dam da (ty le blueberry khoang 70%, co size mini 55,000).", ja: "ホームメイド製法で作ったブルーベリーの風味が濃いブルーベリージャム（ブルーベリー含有量約70%、ミニサイズ 55,000）。", zh: "采用手工方式制作、蓝莓风味浓郁的蓝莓果酱（蓝莓含量约70%，迷你装55,000）。" }, priceVnd: 140000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/jam-blueberry.png" },
 
   { name: { en: "Vietnam Premium Cashew 210g", ko: "베트남 프리미엄 캐슈넛 210g" }, category: "cashewProduct", description: { en: "Premium Vietnamese cashew nut product.", ko: "베트남에서 재배한 프리미엄 등급 캐슈넛", vi: "Hat dieu cao cap duoc trong tai Viet Nam.", ja: "ベトナムで栽培したプレミアムグレードのカシューナッツです。", zh: "在越南种植的高等级精品腰果。" }, priceVnd: 150000, nutsIncluded: true, eggIncluded: false, image: "images/menu-01.png?v=1" },
+  { name: { en: "NURIDAL Cashew Nut 70g", ko: "NURIDAL 캐슈넛 70g" }, category: "cashewProduct", description: { en: "NURIDAL roasted and salted cashew nuts.", ko: "누리달 로스티드 솔티드 캐슈넛", vi: "Hat dieu rang muoi NURIDAL.", ja: "NURIDAL ロースト＆ソルト カシューナッツ。", zh: "NURIDAL 烘烤加盐腰果。" }, priceVnd: 79000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/70g.png?v=20260623-1" },
+  { name: { en: "NURIDAL Cashew Nut 250g", ko: "NURIDAL 캐슈넛 250g" }, category: "cashewProduct", description: { en: "NURIDAL roasted and salted cashew nuts.", ko: "누리달 로스티드 솔티드 캐슈넛", vi: "Hat dieu rang muoi NURIDAL.", ja: "NURIDAL ロースト＆ソルト カシューナッツ。", zh: "NURIDAL 烘烤加盐腰果。" }, priceVnd: 239000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/250g.png?v=20260623-1" },
+  { name: { en: "NURIDAL Cashew Nut 500g", ko: "NURIDAL 캐슈넛 500g" }, category: "cashewProduct", description: { en: "NURIDAL roasted and salted cashew nuts.", ko: "누리달 로스티드 솔티드 캐슈넛", vi: "Hat dieu rang muoi NURIDAL.", ja: "NURIDAL ロースト＆ソルト カシューナッツ。", zh: "NURIDAL 烘烤加盐腰果。" }, priceVnd: 389000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/500g.png?v=20260623-1" },
 
   { name: { en: "Cashew House Gift Set 25", ko: "캐슈하우스 선물세트25" }, category: "giftSet", description: { en: "Gift set composed of 1 mini cashew scone and 5 madeleines.", ko: "미니캐슈스콘1개와 5개의 마들렌 구성", vi: "Bo qua tang gom 1 mini scone hat dieu va 5 banh madeleine.", ja: "ミニカシュースコーン1個とマドレーヌ5個で構成されたギフトセット。", zh: "由1个迷你腰果司康和5个玛德莲组成的礼盒。" }, priceVnd: 250000, nutsIncluded: true, eggIncluded: true, eggWashIncluded: false, image: "images/선물세트25-1.jpg", images: ["images/선물세트25-1.jpg", "images/선물세트25-2.jpg"], imagePositions: ["100% center", "center"] },
   { name: { en: "Cashew House Gift Set 30", ko: "캐슈하우스 선물세트30" }, category: "giftSet", description: { en: "Gift set composed of 1 crunch toffee, 2 cashew chocolate cookies, and 2 madeleines.", ko: "크런치토피1개과 캐슈초콜릿쿠키2개, 마들렌2개의 구성", vi: "Bo qua tang gom 1 crunch toffee, 2 cookie socola hat dieu va 2 banh madeleine.", ja: "クランチトフィー1個、カシューチョコレートクッキー2個、マドレーヌ2個で構成されたギフトセット。", zh: "由1个脆太妃糖、2个腰果巧克力曲奇和2个玛德莲组成的礼盒。" }, priceVnd: 300000, nutsIncluded: true, eggIncluded: true, eggWashIncluded: false, image: "images/선물세트30-1.jpg", images: ["images/선물세트30-1.jpg", "images/선물세트30-2.jpg"], imagePositions: ["center", "center 60%"] },
@@ -383,6 +386,9 @@ const FIXED_MENU_KEYS = [
   "homemade-raspberry-jam",
   "homemade-blueberry-jam",
   "vietnam-premium-cashew-210g",
+  "nuridal-cashew-nut-70g",
+  "nuridal-cashew-nut-250g",
+  "nuridal-cashew-nut-500g",
   "cashew-house-gift-set-25",
   "cashew-house-gift-set-30",
   "cashew-house-gift-set-66",
