@@ -110,7 +110,7 @@ const MENU_CATALOG = [
   ["jamSpread", "cashew-basil-pesto", "Cashew Basil Pesto"],
   ["jamSpread", "homemade-raspberry-jam", "Homemade Raspberry Jam"],
   ["jamSpread", "homemade-blueberry-jam", "Homemade Blueberry Jam"],
-  ["cashewProduct", "vietnam-premium-cashew-210g", "Vietnam Premium Cashew 210g"],
+  ["cashewProduct", "dream-cashew-nut-210g", "Dream Cashew Nut 210g"],
   ["cashewProduct", "nuridal-cashew-nut-70g", "NURIDAL Cashew Nut 70g"],
   ["cashewProduct", "nuridal-cashew-nut-250g", "NURIDAL Cashew Nut 250g"],
   ["cashewProduct", "nuridal-cashew-nut-500g", "NURIDAL Cashew Nut 500g"],

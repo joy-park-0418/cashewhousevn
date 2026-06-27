@@ -40,7 +40,7 @@ class Program
         }
         if (darkBgMode_)
         {
-            return avg <= 12 && sp <= 14;
+            return avg <= 10 && sp <= 12;
         }
         bool lightBackdrop = avg >= 200 && sp <= 58;
         bool darkBackdrop = avg <= 58 && sp <= 52;
@@ -117,6 +117,131 @@ class Program
         }
     }
 
+    static bool IsTransparent(byte[] buf, int stride, int w, int h, int x, int y)
+    {
+        int o = y * stride + x * 4;
+        return buf[o + 3] < 16;
+    }
+
+    static void TryEnqueueTransparent(byte[] buf, int stride, int w, int h, bool[] mark, Queue<int> q, int x, int y)
+    {
+        if (x < 0 || x >= w || y < 0 || y >= h) return;
+        int p = y * w + x;
+        if (mark[p]) return;
+        if (!IsTransparent(buf, stride, w, h, x, y)) return;
+        mark[p] = true;
+        q.Enqueue(p);
+    }
+
+    static void FloodExteriorTransparent(byte[] buf, int stride, int w, int h, bool[] exterior)
+    {
+        var q = new Queue<int>();
+        for (int x = 0; x < w; x++)
+        {
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, x, 0);
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, x, h - 1);
+        }
+        for (int y = 0; y < h; y++)
+        {
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, 0, y);
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, w - 1, y);
+        }
+        while (q.Count > 0)
+        {
+            int p = q.Dequeue();
+            int x = p % w;
+            int y = p / w;
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, x - 1, y);
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, x + 1, y);
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, x, y - 1);
+            TryEnqueueTransparent(buf, stride, w, h, exterior, q, x, y + 1);
+        }
+    }
+
+    static void FillInteriorHoles(byte[] buf, byte[] original, int stride, int w, int h)
+    {
+        var exterior = new bool[w * h];
+        FloodExteriorTransparent(buf, stride, w, h, exterior);
+        for (int p = 0; p < w * h; p++)
+        {
+            int y = p / w;
+            int x = p % w;
+            int o = y * stride + x * 4;
+            if (buf[o + 3] >= 16) continue;
+            if (exterior[p]) continue;
+            buf[o] = original[o];
+            buf[o + 1] = original[o + 1];
+            buf[o + 2] = original[o + 2];
+            buf[o + 3] = original[o + 3] >= 16 ? original[o + 3] : (byte)255;
+        }
+    }
+
+    static bool IsDarkBackgroundPixel(byte r, byte g, byte b)
+    {
+        return r <= 8 && g <= 8 && b <= 8;
+    }
+
+    static void FloodExteriorDarkBackground(byte[] buf, int stride, int w, int h, bool[] exterior)
+    {
+        var q = new Queue<int>();
+        for (int x = 0; x < w; x++)
+        {
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x, 0);
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x, h - 1);
+        }
+        for (int y = 0; y < h; y++)
+        {
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, 0, y);
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, w - 1, y);
+        }
+        while (q.Count > 0)
+        {
+            int p = q.Dequeue();
+            int x = p % w;
+            int y = p / w;
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x - 1, y);
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x + 1, y);
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x, y - 1);
+            TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x, y + 1);
+        }
+    }
+
+    static void TryEnqueueDarkBg(byte[] buf, int stride, int w, int h, bool[] mark, Queue<int> q, int x, int y)
+    {
+        if (x < 0 || x >= w || y < 0 || y >= h) return;
+        int p = y * w + x;
+        if (mark[p]) return;
+        byte r, g, b;
+        GetRgb(buf, stride, w, h, x, y, out r, out g, out b);
+        if (!IsDarkBackgroundPixel(r, g, b)) return;
+        mark[p] = true;
+        q.Enqueue(p);
+    }
+
+    static void ApplyDarkBackgroundMatte(byte[] buf, byte[] original, int stride, int w, int h)
+    {
+        var exterior = new bool[w * h];
+        FloodExteriorDarkBackground(original, stride, w, h, exterior);
+        for (int p = 0; p < w * h; p++)
+        {
+            int y = p / w;
+            int x = p % w;
+            int o = y * stride + x * 4;
+            if (exterior[p])
+            {
+                buf[o] = 0;
+                buf[o + 1] = 0;
+                buf[o + 2] = 0;
+                buf[o + 3] = 0;
+                continue;
+            }
+            buf[o] = original[o];
+            buf[o + 1] = original[o + 1];
+            buf[o + 2] = original[o + 2];
+            buf[o + 3] = 255;
+        }
+    }
+
     static void ClearMarkedPixels_(byte[] buf, int stride, bool[] mark, int w, int h)
     {
         for (int p = 0; p < w * h; p++)
@@ -153,6 +278,19 @@ class Program
             int bytes = Math.Abs(stride) * h;
             var buf = new byte[bytes];
             Marshal.Copy(data.Scan0, buf, 0, bytes);
+            var original = new byte[bytes];
+            Array.Copy(buf, original, bytes);
+
+            if (darkBgMode_)
+            {
+                ApplyDarkBackgroundMatte(buf, original, stride, w, h);
+                Marshal.Copy(buf, 0, data.Scan0, bytes);
+                bmp.UnlockBits(data);
+                bmp.Save(tempPng, ImageFormat.Png);
+                File.Copy(tempPng, outputPath, true);
+                try { File.Delete(tempPng); } catch { }
+                return;
+            }
 
             var mark = new bool[w * h];
             var q = new Queue<int>();
@@ -179,7 +317,7 @@ class Program
                 TryEnqueueEdge(buf, stride, w, h, mark, q, x, y + 1);
             }
 
-            GrowBackgroundMask(buf, stride, w, h, mark, gentle ? 6 : (darkBgMode_ ? 2 : 40));
+            GrowBackgroundMask(buf, stride, w, h, mark, gentle ? 6 : 40);
             ClearMarkedPixels_(buf, stride, mark, w, h);
 
             Marshal.Copy(buf, 0, data.Scan0, bytes);

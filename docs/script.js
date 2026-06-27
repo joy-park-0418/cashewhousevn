@@ -315,7 +315,7 @@ const menuData = [
   { name: { en: "Homemade Raspberry Jam", ko: "홈메이드 라즈베리잼" }, category: "jamSpread", description: { en: "Homemade raspberry jam with bright tart-sweet flavor (raspberry content about 57%, mini size available).", ko: "홈메이드 방식으로 만든 새콤달콤한 맛의 라즈베리잼 (라즈베리 함량 약 57%, 미니사이즈 55,000)", vi: "Mut raspberry thu cong vi chua ngot can bang (ty le raspberry khoang 57%, co size mini 55,000).", ja: "ホームメイド製法で作った甘酸っぱいラズベリージャム（ラズベリー含有量約57%、ミニサイズ 55,000）。", zh: "采用手工方式制作的酸甜树莓果酱（树莓含量约57%，迷你装55,000）。" }, priceVnd: 140000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/jam-raspberry.png" },
   { name: { en: "Homemade Blueberry Jam", ko: "홈메이드 블루베리잼" }, category: "jamSpread", description: { en: "Homemade blueberry jam with rich blueberry flavor (blueberry content about 70%, mini size available).", ko: "홈메이드 방식으로 만든 블루베리 맛이 진한 블루베리잼 (블루베리 함량 약 70%, 미니사이즈 55,000)", vi: "Mut blueberry thu cong voi huong vi blueberry dam da (ty le blueberry khoang 70%, co size mini 55,000).", ja: "ホームメイド製法で作ったブルーベリーの風味が濃いブルーベリージャム（ブルーベリー含有量約70%、ミニサイズ 55,000）。", zh: "采用手工方式制作、蓝莓风味浓郁的蓝莓果酱（蓝莓含量约70%，迷你装55,000）。" }, priceVnd: 140000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/jam-blueberry.png" },
 
-  { name: { en: "Vietnam Premium Cashew 210g", ko: "베트남 프리미엄 캐슈넛 210g" }, category: "cashewProduct", description: { en: "Premium Vietnamese cashew nut product.", ko: "베트남에서 재배한 프리미엄 등급 캐슈넛", vi: "Hat dieu cao cap duoc trong tai Viet Nam.", ja: "ベトナムで栽培したプレミアムグレードのカシューナッツです。", zh: "在越南种植的高等级精品腰果。" }, priceVnd: 150000, nutsIncluded: true, eggIncluded: false, image: "images/menu-01.png?v=1" },
+  { name: { en: "Dream Cashew Nut 210g", ko: "드림캐슈넛 210g" }, category: "cashewProduct", description: { en: "Premium dream cashew nuts.", ko: "프리미엄 드림 캐슈넛", vi: "Hat dieu Dream cao cap.", ja: "プレミアムドリームカシューナッツ。", zh: "精品Dream腰果。" }, priceVnd: 150000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/dream-cashew-nut-210g.png?v=20260623-4", imageScale: 0.92 },
   { name: { en: "NURIDAL Cashew Nut 70g", ko: "NURIDAL 캐슈넛 70g" }, category: "cashewProduct", description: { en: "NURIDAL roasted and salted cashew nuts.", ko: "누리달 로스티드 솔티드 캐슈넛", vi: "Hat dieu rang muoi NURIDAL.", ja: "NURIDAL ロースト＆ソルト カシューナッツ。", zh: "NURIDAL 烘烤加盐腰果。" }, priceVnd: 79000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/70g.png?v=20260623-2" },
   { name: { en: "NURIDAL Cashew Nut 250g", ko: "NURIDAL 캐슈넛 250g" }, category: "cashewProduct", description: { en: "NURIDAL roasted and salted cashew nuts.", ko: "누리달 로스티드 솔티드 캐슈넛", vi: "Hat dieu rang muoi NURIDAL.", ja: "NURIDAL ロースト＆ソルト カシューナッツ。", zh: "NURIDAL 烘烤加盐腰果。" }, priceVnd: 239000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/250g.png?v=20260623-2" },
   { name: { en: "NURIDAL Cashew Nut 500g", ko: "NURIDAL 캐슈넛 500g" }, category: "cashewProduct", description: { en: "NURIDAL roasted and salted cashew nuts.", ko: "누리달 로스티드 솔티드 캐슈넛", vi: "Hat dieu rang muoi NURIDAL.", ja: "NURIDAL ロースト＆ソルト カシューナッツ。", zh: "NURIDAL 烘烤加盐腰果。" }, priceVnd: 389000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/500g.png?v=20260623-2" },
@@ -385,7 +385,7 @@ const FIXED_MENU_KEYS = [
   "cashew-basil-pesto",
   "homemade-raspberry-jam",
   "homemade-blueberry-jam",
-  "vietnam-premium-cashew-210g",
+  "dream-cashew-nut-210g",
   "nuridal-cashew-nut-70g",
   "nuridal-cashew-nut-250g",
   "nuridal-cashew-nut-500g",
