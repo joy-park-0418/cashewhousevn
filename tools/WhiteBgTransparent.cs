@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 /// <summary>
 /// 가장자리와 연결된 단색 배경 제거 (흰·밝은 회색 / 검정·어두운 회색 모두).
-/// gentle 모드: 밀가루/밝은 토핑이 있는 제품용 — 배경만 제거, 빵 테두리 색 유지.
+/// darkbg 모드: 검정 배경 제품 사진용 — 가장자리 검정만 제거, 밝은 영역 침식 없음.
 ///
 /// Recompile:
 /// %WINDIR%\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /out:tools\WhiteBgTransparent.exe tools\WhiteBgTransparent.cs /reference:%WINDIR%\Microsoft.NET\Framework64\v4.0.30319\System.Drawing.dll
@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 class Program
 {
     static bool gentleMode_;
+    static bool darkBgMode_;
 
     static void GetRgb(byte[] buf, int stride, int w, int h, int x, int y, out byte r, out byte g, out byte b)
     {
@@ -37,6 +38,10 @@ class Program
         {
             return avg >= 248 && sp <= 22;
         }
+        if (darkBgMode_)
+        {
+            return avg <= 12 && sp <= 14;
+        }
         bool lightBackdrop = avg >= 200 && sp <= 58;
         bool darkBackdrop = avg <= 58 && sp <= 52;
         return lightBackdrop || darkBackdrop;
@@ -49,6 +54,10 @@ class Program
         if (gentleMode_)
         {
             return avg >= 246 && sp <= 28;
+        }
+        if (darkBgMode_)
+        {
+            return avg <= 18 && sp <= 22;
         }
         bool light = avg >= 175 && sp <= 68;
         bool dark = avg <= 85 && sp <= 62;
@@ -123,9 +132,10 @@ class Program
         }
     }
 
-    static void Process(string inputPath, string outputPath, bool gentle)
+    static void Process(string inputPath, string outputPath, bool gentle, bool darkBg)
     {
         gentleMode_ = gentle;
+        darkBgMode_ = darkBg;
         string tempPng = Path.Combine(Path.GetTempPath(), "wbgt-" + Guid.NewGuid().ToString("n") + ".png");
         using (var src = new Bitmap(inputPath))
         using (var bmp = new Bitmap(src.Width, src.Height, PixelFormat.Format32bppArgb))
@@ -169,7 +179,7 @@ class Program
                 TryEnqueueEdge(buf, stride, w, h, mark, q, x, y + 1);
             }
 
-            GrowBackgroundMask(buf, stride, w, h, mark, gentle ? 6 : 40);
+            GrowBackgroundMask(buf, stride, w, h, mark, gentle ? 6 : (darkBgMode_ ? 2 : 40));
             ClearMarkedPixels_(buf, stride, mark, w, h);
 
             Marshal.Copy(buf, 0, data.Scan0, bytes);
@@ -184,13 +194,14 @@ class Program
     {
         if (args.Length < 1)
         {
-            Console.Error.WriteLine("Usage: WhiteBgTransparent.exe <input.png> [output.png] [gentle]");
+            Console.Error.WriteLine("Usage: WhiteBgTransparent.exe <input.png> [output.png] [gentle|darkbg]");
             Environment.Exit(1);
             return;
         }
         string input = args[0];
         string output = args[0];
         bool gentle = false;
+        bool darkBg = false;
 
         for (int i = 1; i < args.Length; i++)
         {
@@ -199,10 +210,16 @@ class Program
                 gentle = true;
                 continue;
             }
+            if (args[i] == "darkbg")
+            {
+                darkBg = true;
+                continue;
+            }
             output = args[i];
         }
 
-        Process(input, output, gentle);
-        Console.WriteLine("Wrote " + output + (gentle ? " (gentle)" : ""));
+        Process(input, output, gentle, darkBg);
+        string mode = gentle ? " (gentle)" : (darkBg ? " (darkbg)" : "");
+        Console.WriteLine("Wrote " + output + mode);
     }
 }
