@@ -59,6 +59,7 @@ const MENU_CATALOG = [
   ["artisanBread", "chestnut-sourdough", "Chestnut Sourdough"],
   ["artisanBread", "chocolate-baguette", "Chocolate Baguette"],
   ["artisanBread", "fig-cream-cheese-baguette", "Fig Cream Cheese Baguette"],
+  ["artisanBread", "red-bean-butter-baguette", "Red Bean Butter Baguette"],
   ["saltBreadBagel", "salt-bread", "Salt Bread"],
   ["saltBreadBagel", "cashew-salt-bread", "Cashew Salt Bread"],
   ["saltBreadBagel", "red-bean-butter-salt-bread", "Red Bean Butter Salt Bread"],
