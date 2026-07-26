@@ -356,6 +356,7 @@ const FIXED_MENU_KEYS = [
   "cashew-strawberry-jam-toast",
   "cranberry-cream-cheese-bread",
   "cashew-chestnut-bread",
+  "egg-mayo-sandwich",
   "sausage-bread",
   "sweet-red-bean-bread",
   "butter-mochi",
@@ -368,6 +369,8 @@ const FIXED_MENU_KEYS = [
   "honey-sweet-potato-sourdough",
   "chestnut-sourdough",
   "chocolate-baguette",
+  "fig-cream-cheese-baguette",
+  "red-bean-butter-baguette",
   "garlic-cream-cheese-baguette",
   "shrimp-baguette",
   "cashew-ball-cookie-large",
@@ -773,9 +776,16 @@ async function refreshInventoryStatuses() {
   if (!INVENTORY_API_URL) return;
   try {
     const response = await fetch(INVENTORY_API_URL, { cache: "no-store" });
-    if (!response.ok) return;
+    if (!response.ok) {
+      console.warn("Inventory API HTTP error:", response.status);
+      return;
+    }
     const payload = await response.json();
     const rows = extractInventoryRows(payload);
+    if (rows.length === 0) {
+      console.warn("Inventory API returned no rows.");
+      return;
+    }
     inventoryStatusByKey.clear();
     rows.forEach((row) => {
       const menuKey = String(row?.menu_key ?? row?.menuKey ?? "").trim();
@@ -784,8 +794,8 @@ async function refreshInventoryStatuses() {
       inventoryStatusByKey.set(menuKey, stockStatus);
     });
     renderMenus();
-  } catch (_error) {
-    // Keep existing UI if inventory API is temporarily unavailable.
+  } catch (error) {
+    console.warn("Inventory API unavailable:", error);
   }
 }
 
