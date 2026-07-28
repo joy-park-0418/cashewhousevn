@@ -1,26 +1,29 @@
 menu_key,menu_name_en,stock_status
 ,--- Loaf Bread ---,
 milk-bread,Milk Bread,in_stock
-sugar-toast,Sugar Toast,sold_out
+sugar-toast,Sugar Toast,in_stock
 whole-wheat-bread,Whole Wheat Bread,in_stock
 cashew-strawberry-jam-toast,Cashew Strawberry Jam Toast,in_stock
 cashew-chestnut-bread,Cashew Chestnut Bread,in_stock
+egg-mayo-sandwich,Egg Mayo Sandwich,in_stock
 ,--- Artisan Bread ---,
 wine-fig-cream-cheese-sourdough,Wine Fig Cream Cheese Sourdough,in_stock
 honey-sweet-potato-sourdough,Honey Sweet Potato Sourdough,in_stock
-chestnut-sourdough,Chestnut Sourdough,sold_out
+chestnut-sourdough,Chestnut Sourdough,in_stock
 chocolate-baguette,Chocolate Baguette,in_stock
+fig-cream-cheese-baguette,Fig Cream Cheese Baguette,in_stock
+red-bean-butter-baguette,Red Bean Butter Baguette,in_stock
 ,--- Salt Bread & Bagel ---,
 salt-bread,Salt Bread,in_stock
-cashew-salt-bread,Cashew Salt Bread,sold_out
+cashew-salt-bread,Cashew Salt Bread,in_stock
 red-bean-butter-salt-bread,Red Bean Butter Salt Bread,in_stock
 green-onion-cream-cheese-salt-bread,Green Onion Cream Cheese Salt Bread,in_stock
-corn-cheese-salt-bread,Corn Cheese Salt Bread,sold_out
-sriracha-mayo-sausage-salt-bread,Sriracha Mayo Sausage Salt Bread,sold_out
+corn-cheese-salt-bread,Corn Cheese Salt Bread,in_stock
+sriracha-mayo-sausage-salt-bread,Sriracha Mayo Sausage Salt Bread,in_stock
 plain-bagel,Plain Bagel,in_stock
 salt-bagel,Salt Bagel,in_stock
 olive-cheese-bagel,Olive Cheese Bagel,in_stock
-potato-cheese-bagel,Potato Cheese Bagel,sold_out
+potato-cheese-bagel,Potato Cheese Bagel,in_stock
 ,--- Sweet Bread ---,
 cashew-cinnamon-roll,Cashew Cinnamon Roll,in_stock
 condensed-milk-bread,Condensed Milk Bread,in_stock
@@ -36,7 +39,6 @@ cranberry-cream-cheese-bread,Cranberry Cream Cheese Bread,in_stock
 sausage-bread,Sausage Bread,in_stock
 sweet-red-bean-bread,Sweet Red Bean Bread,in_stock
 butter-mochi,Butter Mochi,in_stock
-black-butter-mochi,Black Sesame Butter Mochi,sold_out
 garlic-cream-cheese-baguette,Garlic Cream Cheese Baguette,in_stock
 shrimp-baguette,Shrimp Baguette,in_stock
 ,--- Cookie & Small Sweets ---,
@@ -46,7 +48,7 @@ cashew-crunch-toffee,Cashew Crunch Toffee,in_stock
 dark-chocolate-cashew-cookie,Dark Chocolate Cashew Cookie,in_stock
 white-chocolate-cashew-cookie,White Chocolate Cashew Cookie,in_stock
 caramel-cashew-rocher-chocolate,Caramel Cashew Rocher Chocolate,in_stock
-double-berry-jam-cookie,Double Berry Jam Cookie,sold_out
+double-berry-jam-cookie,Double Berry Jam Cookie,in_stock
 milk-ganache-cookie,Milk Ganache Cookie,in_stock
 cashew-cocoa-crispy-cookie,Cashew Cocoa Crispy Cookie,in_stock
 ,--- Scone ---,
@@ -69,7 +71,7 @@ cashew-house-gift-set-66,Cashew House Gift Set 66,in_stock
 ,--- Jam & Spread ---,
 cashew-basil-pesto,Cashew Basil Pesto,in_stock
 homemade-raspberry-jam,Homemade Raspberry Jam,sold_out
-homemade-blueberry-jam,Homemade Blueberry Jam,sold_out
+homemade-blueberry-jam,Homemade Blueberry Jam,in_stock
 ,--- Cashew Product ---,
 dream-cashew-nut-210g,Dream Cashew Nut 210g,in_stock
 nuridal-cashew-nut-70g,NURIDAL Cashew Nut 70g,in_stock

@@ -84,7 +84,6 @@ const MENU_CATALOG = [
   ["sweetBread", "sausage-bread", "Sausage Bread"],
   ["sweetBread", "sweet-red-bean-bread", "Sweet Red Bean Bread"],
   ["sweetBread", "butter-mochi", "Butter Mochi"],
-  ["sweetBread", "black-butter-mochi", "Black Sesame Butter Mochi"],
   ["sweetBread", "garlic-cream-cheese-baguette", "Garlic Cream Cheese Baguette"],
   ["sweetBread", "shrimp-baguette", "Shrimp Baguette"],
   ["cookieSmallSweets", "cashew-ball-cookie-large", "Cashew Ball Cookie (Large)"],
@@ -178,14 +177,32 @@ function normalizeStockStatus_(value) {
   const normalized = String(value || "")
     .trim()
     .toLowerCase()
-    .replace(/-/g, "_");
-  if (normalized === "in_stock" || normalized === "sold_out") {
-    return normalized;
+    .replace(/-/g, "_")
+    .replace(/ /g, "_");
+  if (
+    normalized === "in_stock" ||
+    normalized === "instock" ||
+    normalized === "재고있음" ||
+    normalized === "재고_있음" ||
+    normalized === "있음"
+  ) {
+    return "in_stock";
   }
-  if (normalized === "low_stock" || normalized === "out_of_stock" || normalized === "soldout") {
-    return normalized === "low_stock" ? "in_stock" : "sold_out";
+  if (
+    normalized === "sold_out" ||
+    normalized === "soldout" ||
+    normalized === "out_of_stock" ||
+    normalized === "outofstock" ||
+    normalized === "품절" ||
+    normalized === "매진"
+  ) {
+    return "sold_out";
   }
-  return "in_stock";
+  if (normalized === "low_stock" || normalized === "lowstock" || normalized === "재고부족") {
+    return "in_stock";
+  }
+  // Unknown values must not silently become in_stock (that hid 품절 on the website).
+  return "unknown";
 }
 
 function readExistingInventoryMap_(sheet) {
@@ -212,12 +229,58 @@ function readExistingInventoryMap_(sheet) {
   return map;
 }
 
-function buildCategoryRows_(existingMap) {
+function resolveExistingRow_(existingMap, menuKey) {
+  if (existingMap.has(menuKey)) {
+    return existingMap.get(menuKey);
+  }
+
+  // 이전 메뉴 키 → 신규 키 재고값 이전
+  if (menuKey === "dream-cashew-nut-210g" && existingMap.has("vietnam-premium-cashew-210g")) {
+    return existingMap.get("vietnam-premium-cashew-210g");
+  }
+
+  return {};
+}
+
+function parseCatalogOverride_(rawCatalog) {
+  if (!rawCatalog) {
+    return null;
+  }
+
+  try {
+    const decoded = String(rawCatalog).includes("%")
+      ? decodeURIComponent(String(rawCatalog))
+      : String(rawCatalog);
+    const jsonText = decoded.startsWith("[")
+      ? decoded
+      : Utilities.newBlob(Utilities.base64DecodeWebSafe(decoded)).getDataAsString();
+    const parsed = JSON.parse(jsonText);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return null;
+    }
+
+    return parsed
+      .map((entry) => {
+        if (!Array.isArray(entry) || entry.length < 3) {
+          return null;
+        }
+        return [String(entry[0]).trim(), String(entry[1]).trim(), String(entry[2]).trim()];
+      })
+      .filter((entry) => entry && entry[0] && entry[1] && entry[2]);
+  } catch (_error) {
+    return null;
+  }
+}
+
+function buildCategoryRows_(existingMap, catalogOverride) {
   const rows = [HEADERS];
   const rowCategories = [""];
   let previousCategoryKey = "";
+  const catalog = Array.isArray(catalogOverride) && catalogOverride.length > 0
+    ? catalogOverride
+    : MENU_CATALOG;
 
-  MENU_CATALOG.forEach(([categoryKey, menuKey, menuNameEn]) => {
+  catalog.forEach(([categoryKey, menuKey, menuNameEn]) => {
     if (categoryKey !== previousCategoryKey) {
       const categoryLabel = CATEGORY_LABELS[categoryKey] || categoryKey;
       rows.push(["", `--- ${categoryLabel} ---`, "", ""]);
@@ -225,7 +288,7 @@ function buildCategoryRows_(existingMap) {
       previousCategoryKey = categoryKey;
     }
 
-    const existing = existingMap.get(menuKey) || {};
+    const existing = resolveExistingRow_(existingMap, menuKey);
     rows.push([
       menuKey,
       menuNameEn,
@@ -317,10 +380,10 @@ function applyStockStatusValidation_(sheet, rows) {
   });
 }
 
-function applyInventoryLayout_(showAlert) {
+function applyInventoryLayout_(showAlert, catalogOverride) {
   const sheet = getInventorySheet_();
   const existingMap = readExistingInventoryMap_(sheet);
-  const built = buildCategoryRows_(existingMap);
+  const built = buildCategoryRows_(existingMap, catalogOverride);
 
   sheet.clear();
   sheet.getRange(1, 1, built.rows.length, HEADERS.length).setValues(built.rows);
@@ -365,20 +428,56 @@ function onOpen() {
     .addToUi();
 }
 
+function readRequestPayload_(e) {
+  const parameter = e?.parameter || {};
+  let body = {};
+
+  try {
+    if (e?.postData?.contents) {
+      body = JSON.parse(e.postData.contents);
+    }
+  } catch (_error) {
+    body = {};
+  }
+
+  return {
+    action: String(body.action || parameter.action || "").trim(),
+    key: String(body.key || parameter.key || "").trim(),
+    catalog: body.catalog || parameter.catalog || "",
+  };
+}
+
+function handleApplyRequest_(e) {
+  const request = readRequestPayload_(e);
+  if (request.key !== SYNC_KEY) {
+    return jsonResponse_({ ok: false, error: "invalid_key" });
+  }
+
+  const catalogOverride = Array.isArray(request.catalog)
+    ? request.catalog
+    : parseCatalogOverride_(request.catalog);
+
+  try {
+    return jsonResponse_(applyInventoryLayout_(false, catalogOverride));
+  } catch (error) {
+    return jsonResponse_({ ok: false, error: String(error) });
+  }
+}
+
 function doGet(e) {
-  const action = String(e?.parameter?.action || "").trim();
+  const request = readRequestPayload_(e);
 
-  if (action === "apply") {
-    const key = String(e?.parameter?.key || "").trim();
-    if (key !== SYNC_KEY) {
-      return jsonResponse_({ ok: false, error: "invalid_key" });
-    }
+  if (request.action === "version") {
+    return jsonResponse_({
+      ok: true,
+      version: "2026-07-26-menu69",
+      menuCatalogCount: MENU_CATALOG.length,
+      hasApply: true,
+    });
+  }
 
-    try {
-      return jsonResponse_(applyInventoryLayout_(false));
-    } catch (error) {
-      return jsonResponse_({ ok: false, error: String(error) });
-    }
+  if (request.action === "apply") {
+    return handleApplyRequest_(e);
   }
 
   const sheet = getInventorySheet_();
@@ -394,4 +493,13 @@ function doGet(e) {
     }));
 
   return jsonResponse_({ rows });
+}
+
+function doPost(e) {
+  const request = readRequestPayload_(e);
+  if (request.action === "apply") {
+    return handleApplyRequest_(e);
+  }
+
+  return jsonResponse_({ ok: false, error: "unsupported_action" });
 }

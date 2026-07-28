@@ -283,7 +283,6 @@ const menuData = [
   { name: { en: "Sausage Bread", ko: "소세지빵" }, category: "sweetBread", description: { en: "Soft and moist bread filled with whole sausage.", ko: "부드럽고 촉촉한 빵 속에 통소세지를 넣은 빵", vi: "Banh mem am co nhan xuc xich nguyen cay.", ja: "やわらかくしっとりしたパンの中に、ソーセージを丸ごと入れたパンです。", zh: "在柔软湿润的面包中包入整根香肠的面包。" }, priceVnd: 50000, nutsIncluded: false, eggIncluded: true, eggWashIncluded: true, image: "images/소세지브레드.png", imageScale: 1.265 },
   { name: { en: "Sweet Red Bean Bread", ko: "단팥빵" }, category: "sweetBread", description: { en: "Soft bread filled with house-made red bean paste, mildly sweet.", ko: "직접 만든 팥앙금을 넣어 많이 달지않고 부드러운 빵", vi: "Banh mem nhan dau do tu lam, ngot vua phai.", ja: "自家製のあんこを入れ、甘さ控えめでやわらかいパンです。", zh: "加入自制红豆馅、甜度不过重且口感柔软的面包。" }, priceVnd: 45000, nutsIncluded: true, eggIncluded: true, eggWashIncluded: true, image: "images/단팥빵.png" },
   { name: { en: "Butter Mochi", ko: "버터모찌", vi: "Bánh mochi bơ", ja: "バターもち", zh: "黄油麻糬" }, category: "sweetBread", description: { en: "Chewy, nutty mochi made with glutinous rice flour, served with cashew fresh cream.", ko: "찹쌀가루로 만든 쫀득하고 고소한 모찌, 캐슈생크림이 함께 제공", vi: "Mochi dai thom lam tu bot gao nep, kem tuoi hat dieu di kem.", ja: "もち粉で作ったもちもちで香ばしいもちに、カシュー生クリームが付きます。", zh: "糯米粉制成的Q弹香糯麻糬，附腰果鲜奶油。" }, priceVnd: 70000, nutsIncluded: false, eggIncluded: true, eggWashIncluded: false, image: "images/버터모찌.png?v=20260501-3" },
-  { name: { en: "Black Sesame Butter Mochi", ko: "블랙버터모찌", vi: "Bánh mochi đen mè", ja: "黒ごまバターもち", zh: "黑芝麻黄油麻糬" }, category: "sweetBread", description: { en: "Chewy, savory mochi made with glutinous rice flour and black sesame.", ko: "찹쌀가루와 흑임자를 넣어 만든 고소하고 쫀득한 모찌.", vi: "Mochi dai thom lam tu bot gao nep va me den.", ja: "もち粉と黒ごまで作った、香ばしくもちもちのもちです。", zh: "糯米粉与黑芝麻制成，香糯有嚼劲的麻糬。" }, priceVnd: 80000, nutsIncluded: false, eggIncluded: true, eggWashIncluded: false, image: "images/블랙버터모찌.png?v=20260501-3", imageScale: 0.9 },
   { name: { en: "Plain Bagel", ko: "탕종플레인베이글" }, category: "saltBreadBagel", description: { en: "Chewy plain bagel made with tangzhong dough.", ko: "밀가루 반죽을 끓여 만든 탕종 방식으로, 더욱 쫀득한 식감을 즐길 수 있는 베이글입니다.", vi: "Banh bagel plain theo phuong phap tangzhong (nau bot), cho do dai mem hon.", ja: "小麦粉生地を加熱して作る湯種製法で、よりもちっとした食感を楽しめるベーグルです。", zh: "采用将面团加热熟化的汤种工艺制作，口感更加Q弹有嚼劲的原味贝果。" }, priceVnd: 33000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/플레인베이글.png", imageScale: 1.2 },
   { name: { en: "Salt Bagel", ko: "탕종소금베이글" }, category: "saltBreadBagel", description: { en: "Chewy bagel with house butter and sea salt.", ko: "탕종베이글에 우유버터와 소금을 넣어 구워내 짭짤하고 쫀득한 베이글입니다.", vi: "Bagel tangzhong nuong voi bo sua va muoi, vi man nhe va do dai mem.", ja: "湯種ベーグルにミルクバターと塩を加えて焼き上げた、ほどよい塩味でもちっとしたベーグルです。", zh: "在汤种贝果中加入牛奶黄油与盐烘烤，咸香适中、口感Q弹的贝果。" }, priceVnd: 43000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/탕종소금베이글.png", imageScale: 0.81 },
   { name: { en: "Olive Cheese Bagel", ko: "탕종올리브치즈베이글" }, category: "saltBreadBagel", description: { en: "Olive and cheese bagel with chewy texture.", ko: "탕종베이글에 올리브와 치즈를 듬뿍 넣어 만든 쫀득한 베이글입니다.", vi: "Bagel tangzhong deo mem voi nhieu olive va pho mai.", ja: "湯種ベーグルにオリーブとチーズをたっぷり入れて作った、もちっとしたベーグルです。", zh: "在汤种贝果中加入丰富橄榄与芝士制作而成的Q弹贝果。" }, priceVnd: 53000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/올리브치즈베이글.png" },
@@ -360,7 +359,6 @@ const FIXED_MENU_KEYS = [
   "sausage-bread",
   "sweet-red-bean-bread",
   "butter-mochi",
-  "black-butter-mochi",
   "plain-bagel",
   "salt-bagel",
   "olive-cheese-bagel",
@@ -751,15 +749,29 @@ function normalizeStockStatus(value) {
   const normalized = String(value ?? "")
     .trim()
     .toLowerCase()
-    .replaceAll("-", "_");
-  if (normalized === "in_stock" || normalized === "sold_out") {
-    return normalized;
-  }
-  if (normalized === "low_stock") {
+    .replaceAll("-", "_")
+    .replaceAll(" ", "_");
+  if (
+    normalized === "in_stock" ||
+    normalized === "instock" ||
+    normalized === "재고있음" ||
+    normalized === "재고_있음" ||
+    normalized === "있음"
+  ) {
     return "in_stock";
   }
-  if (normalized === "out_of_stock" || normalized === "soldout") {
+  if (
+    normalized === "sold_out" ||
+    normalized === "soldout" ||
+    normalized === "out_of_stock" ||
+    normalized === "outofstock" ||
+    normalized === "품절" ||
+    normalized === "매진"
+  ) {
     return "sold_out";
+  }
+  if (normalized === "low_stock" || normalized === "lowstock" || normalized === "재고부족") {
+    return "in_stock";
   }
   return "unknown";
 }
@@ -775,7 +787,10 @@ function extractInventoryRows(payload) {
 async function refreshInventoryStatuses() {
   if (!INVENTORY_API_URL) return;
   try {
-    const response = await fetch(INVENTORY_API_URL, { cache: "no-store" });
+    const response = await fetch(INVENTORY_API_URL, {
+      cache: "no-store",
+      signal: AbortSignal.timeout(12000),
+    });
     if (!response.ok) {
       console.warn("Inventory API HTTP error:", response.status);
       return;
