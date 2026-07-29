@@ -837,6 +837,7 @@ function renderTabs() {
       activeCategory = category;
       renderTabs();
       renderMenus();
+      categoryTabs.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     categoryTabs.append(button);
   });
