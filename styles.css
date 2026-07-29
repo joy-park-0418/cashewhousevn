@@ -179,9 +179,9 @@ body {
   z-index: 50;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 0 -12px 18px;
-  padding: 12px;
+  gap: 6px;
+  margin: 0 -8px 11px;
+  padding: 7px 8px;
   background: var(--paper);
   background: color-mix(in srgb, var(--paper) 92%, transparent);
   backdrop-filter: blur(10px);
@@ -190,11 +190,13 @@ body {
 }
 
 .tab-button {
-  height: 40px;
-  padding: 0 16px;
+  height: 24px;
+  padding: 0 10px;
   border: 1px solid var(--border);
   border-radius: 999px;
   font: inherit;
+  font-size: 0.6em;
+  line-height: 1;
   background: #fffdfa;
   color: #644f42;
   cursor: pointer;
@@ -205,7 +207,7 @@ body {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
-  box-shadow: 0 7px 14px rgba(141, 86, 54, 0.25);
+  box-shadow: 0 4px 8px rgba(141, 86, 54, 0.25);
 }
 
 .tab-button:hover {
