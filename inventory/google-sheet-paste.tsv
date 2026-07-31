@@ -1,29 +1,33 @@
 menu_key	menu_name_en	stock_status
 	--- Loaf Bread ---	
-milk-bread	Milk Bread	in_stock
-sugar-toast	Sugar Toast	in_stock
+milk-bread	Milk Bread	sold_out
+sugar-toast	Sugar Toast	sold_out
 whole-wheat-bread	Whole Wheat Bread	in_stock
-cashew-strawberry-jam-toast	Cashew Strawberry Jam Toast	in_stock
+cashew-strawberry-jam-toast	Cashew Strawberry Jam Toast	sold_out
 cashew-chestnut-bread	Cashew Chestnut Bread	in_stock
 egg-mayo-sandwich	Egg Mayo Sandwich	in_stock
 	--- Artisan Bread ---	
-wine-fig-cream-cheese-sourdough	Wine Fig Cream Cheese Sourdough	in_stock
-honey-sweet-potato-sourdough	Honey Sweet Potato Sourdough	in_stock
-chestnut-sourdough	Chestnut Sourdough	in_stock
-chocolate-baguette	Chocolate Baguette	in_stock
-fig-cream-cheese-baguette	Fig Cream Cheese Baguette	in_stock
-red-bean-butter-baguette	Red Bean Butter Baguette	in_stock
+wine-fig-cream-cheese-sourdough	Wine Fig Cream Cheese Sourdough	sold_out
+honey-sweet-potato-sourdough	Honey Sweet Potato Sourdough	sold_out
+chestnut-sourdough	Chestnut Sourdough	sold_out
+chocolate-baguette	Chocolate Baguette	sold_out
+fig-cream-cheese-baguette	Fig Cream Cheese Baguette	sold_out
+red-bean-butter-baguette	Red Bean Butter Baguette	sold_out
+kaya-jam-butter-baguette	Kaya Jam Butter Baguette	in_stock
+peach-cream-cheese-ciabatta	Peach Cream Cheese Ciabatta	in_stock
+basil-tomato-olive-cheese-ciabatta	Basil Tomato Olive Cheese Ciabatta	in_stock
+plain-ciabatta	Plain Ciabatta	in_stock
 	--- Salt Bread & Bagel ---	
-salt-bread	Salt Bread	in_stock
-cashew-salt-bread	Cashew Salt Bread	in_stock
+salt-bread	Salt Bread	sold_out
+cashew-salt-bread	Cashew Salt Bread	sold_out
 red-bean-butter-salt-bread	Red Bean Butter Salt Bread	in_stock
 green-onion-cream-cheese-salt-bread	Green Onion Cream Cheese Salt Bread	in_stock
-corn-cheese-salt-bread	Corn Cheese Salt Bread	in_stock
+corn-cheese-salt-bread	Corn Cheese Salt Bread	sold_out
 sriracha-mayo-sausage-salt-bread	Sriracha Mayo Sausage Salt Bread	in_stock
 plain-bagel	Plain Bagel	in_stock
-salt-bagel	Salt Bagel	in_stock
+salt-bagel	Salt Bagel	sold_out
 olive-cheese-bagel	Olive Cheese Bagel	in_stock
-potato-cheese-bagel	Potato Cheese Bagel	in_stock
+potato-cheese-bagel	Potato Cheese Bagel	sold_out
 	--- Sweet Bread ---	
 cashew-cinnamon-roll	Cashew Cinnamon Roll	in_stock
 condensed-milk-bread	Condensed Milk Bread	in_stock
@@ -31,8 +35,8 @@ cashew-bun	Cashew Bun	in_stock
 cream-cashew-bun	Cream Cashew Bun	in_stock
 cashew-butter-cream-sand	Cashew Butter Cream Sand	in_stock
 cream-cheese-roll-bread	Cream Cheese Roll Bread	in_stock
-condensed-coffee-bread	Condensed Coffee Bread	in_stock
-blueberry-bread	Blueberry Bread	in_stock
+condensed-coffee-bread	Condensed Coffee Bread	sold_out
+blueberry-bread	Blueberry Bread	sold_out
 sweet-potato-bread	Sweet Potato Bread	in_stock
 cream-cheese-cashew-bread	Cream Cheese Cashew Bread	in_stock
 cranberry-cream-cheese-bread	Cranberry Cream Cheese Bread	in_stock
@@ -44,11 +48,11 @@ shrimp-baguette	Shrimp Baguette	in_stock
 	--- Cookie & Small Sweets ---	
 cashew-ball-cookie-large	Cashew Ball Cookie (Large)	in_stock
 cashew-ball-cookie-small	Cashew Ball Cookie (Small)	in_stock
-cashew-crunch-toffee	Cashew Crunch Toffee	in_stock
+cashew-crunch-toffee	Cashew Crunch Toffee	sold_out
 dark-chocolate-cashew-cookie	Dark Chocolate Cashew Cookie	in_stock
 white-chocolate-cashew-cookie	White Chocolate Cashew Cookie	in_stock
 caramel-cashew-rocher-chocolate	Caramel Cashew Rocher Chocolate	in_stock
-double-berry-jam-cookie	Double Berry Jam Cookie	in_stock
+double-berry-jam-cookie	Double Berry Jam Cookie	sold_out
 milk-ganache-cookie	Milk Ganache Cookie	in_stock
 cashew-cocoa-crispy-cookie	Cashew Cocoa Crispy Cookie	in_stock
 	--- Scone ---	
