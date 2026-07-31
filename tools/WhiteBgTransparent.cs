@@ -178,7 +178,42 @@ class Program
 
     static bool IsDarkBackgroundPixel(byte r, byte g, byte b)
     {
-        return r <= 8 && g <= 8 && b <= 8;
+        int avg = (r + g + b) / 3;
+        int sp = Spread(r, g, b);
+        return avg <= 38 && sp <= 28;
+    }
+
+    static bool IsDarkGrowPixel(byte r, byte g, byte b)
+    {
+        int avg = (r + g + b) / 3;
+        int sp = Spread(r, g, b);
+        return avg <= 52 && sp <= 36;
+    }
+
+    static void GrowDarkBackgroundMask(byte[] buf, int stride, int w, int h, bool[] mark, int passes)
+    {
+        var next = new bool[w * h];
+        for (int pass = 0; pass < passes; pass++)
+        {
+            Array.Copy(mark, next, mark.Length);
+            bool any = false;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    int p = y * w + x;
+                    if (mark[p]) continue;
+                    if (!NeighborMarked(mark, w, h, x, y)) continue;
+                    byte r, g, b;
+                    GetRgb(buf, stride, w, h, x, y, out r, out g, out b);
+                    if (!IsDarkGrowPixel(r, g, b)) continue;
+                    next[p] = true;
+                    any = true;
+                }
+            }
+            if (!any) break;
+            Array.Copy(next, mark, mark.Length);
+        }
     }
 
     static void FloodExteriorDarkBackground(byte[] buf, int stride, int w, int h, bool[] exterior)
@@ -204,6 +239,7 @@ class Program
             TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x, y - 1);
             TryEnqueueDarkBg(buf, stride, w, h, exterior, q, x, y + 1);
         }
+        GrowDarkBackgroundMask(buf, stride, w, h, exterior, 10);
     }
 
     static void TryEnqueueDarkBg(byte[] buf, int stride, int w, int h, bool[] mark, Queue<int> q, int x, int y)
