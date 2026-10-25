@@ -46,6 +46,7 @@
     cartCopySuccess: "Order copied!",
     cartQtyUnit: "pcs",
     cartFlavorLabel: "Flavor",
+    cartSizeLabel: "Size",
     cartSoldOutHint: "Sold out",
     cartDecrease: "Decrease quantity",
     cartIncrease: "Increase quantity",
@@ -97,6 +98,7 @@
     cartCopySuccess: "주문 내용이 복사되었습니다",
     cartQtyUnit: "개",
     cartFlavorLabel: "맛",
+    cartSizeLabel: "사이즈",
     cartSoldOutHint: "품절",
     cartDecrease: "수량 줄이기",
     cartIncrease: "수량 늘리기",
@@ -148,6 +150,7 @@
     cartCopySuccess: "Đã sao chép đơn hàng",
     cartQtyUnit: "cái",
     cartFlavorLabel: "Hương vị",
+    cartSizeLabel: "Kích thước",
     cartSoldOutHint: "Hết hàng",
     cartDecrease: "Giảm số lượng",
     cartIncrease: "Tăng số lượng",
@@ -199,6 +202,7 @@
     cartCopySuccess: "注文内容をコピーしました",
     cartQtyUnit: "個",
     cartFlavorLabel: "味",
+    cartSizeLabel: "サイズ",
     cartSoldOutHint: "売り切れ",
     cartDecrease: "数量を減らす",
     cartIncrease: "数量を増やす",
@@ -250,6 +254,7 @@
     cartCopySuccess: "订单内容已复制",
     cartQtyUnit: "个",
     cartFlavorLabel: "口味",
+    cartSizeLabel: "规格",
     cartSoldOutHint: "已售罄",
     cartDecrease: "减少数量",
     cartIncrease: "增加数量",
@@ -295,7 +300,7 @@ const menuData = [
   { name: { en: "Red Bean Butter Baguette", ko: "앙버터바게트" }, category: "artisanBread", description: { en: "Crispy baguette filled with sweet red bean paste, butter, and savory cashews.", ko: "바삭한 바게트 사이에 달콤한 팥앙금과 버터, 고소한 캐슈넛을 넣은 빵입니다.", vi: "Baguette gion kep nhan dau do ngot, bo va hat dieu thom beo.", ja: "カリッとしたバゲットの間に甘い粒あんとバター、香ばしいカシューナッツを入れたパンです。", zh: "酥脆法棍中夹入香甜红豆馅、黄油与香浓腰果的面包。" }, priceVnd: 120000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/앙버터바게트.png" },
   { name: { en: "Kaya Jam Butter Baguette", ko: "카야잼버터바게트", vi: "Baguette bơ mứt kaya", ja: "カヤジャムバターバゲット", zh: "咖椰酱黄油法棍" }, category: "artisanBread", description: { en: "Crispy baguette filled with sweet kaya jam and creamy butter.", ko: "바삭한 바게트 사이에 달콤한 카야잼과 부드러운 버터를 넣은 빵입니다.", vi: "Baguette giòn kẹp mứt kaya ngọt và bơ mềm béo.", ja: "カリッとしたバゲットに、甘いカヤジャムとなめらかなバターをサンドしたパンです。", zh: "酥脆法棍中夹入香甜咖椰酱与柔滑黄油的面包。" }, priceVnd: 85000, nutsIncluded: false, eggIncluded: true, eggWashIncluded: false, image: "images/kaya-jam-butter-baguette.png?v=20260731-4", imageScale: 1.0 },
   { name: { en: "Peach Cream Cheese Ciabatta", ko: "황도크림치즈치아바타", vi: "Ciabatta kem phô mai đào", ja: "黄桃クリームチーズチャバッタ", zh: "黄桃奶油芝士恰巴塔" }, category: "artisanBread", description: { en: "Airy ciabatta filled with creamy cheese and sweet yellow peach.", ko: "폭신한 치아바타 사이에 부드러운 크림치즈와 달콤한 황도를 넣은 빵입니다.", vi: "Ciabatta xốp kẹp kem phô mai mềm và đào vàng ngọt.", ja: "ふわっとしたチャバッタに、なめらかなクリームチーズと甘い黄桃をサンドしたパンです。", zh: "松软恰巴塔中夹入柔滑奶油芝士与香甜黄桃的面包。" }, priceVnd: 100000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/peach-cream-cheese-ciabatta.png?v=20260731-2" },
-  { name: { en: "Basil Tomato Olive Cheese Ciabatta", ko: "바질토마토올리브치즈치아바타", vi: "Ciabatta húng quế cà chua ô liu phô mai", ja: "バジルトマトオリーブチーズチャバッタ", zh: "罗勒番茄橄榄芝士恰巴塔" }, category: "artisanBread", description: { en: "Ciabatta topped with basil, tomato, olive, and melted cheese.", ko: "바질, 토마토, 올리브, 치즈를 올려 구운 치아바타입니다.", vi: "Ciabatta nướng với húng quế, cà chua, ô liu và phô mai chảy.", ja: "バジル、トマト、オリーブ、チーズをのせて焼き上げたチャバッタです。", zh: "铺上罗勒、番茄、橄榄与融化芝士烘烤而成的恰巴塔。" }, priceVnd: 85000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/basil-tomato-olive-cheese-ciabatta.png" },
+  { name: { en: "Basil Tomato Olive Cheese Ciabatta", ko: "바질토마토올리브치즈치아바타", vi: "Ciabatta húng quế cà chua ô liu phô mai", ja: "バジルトマトオリーブチーズチャバッタ", zh: "罗勒番茄橄榄芝士恰巴塔" }, category: "artisanBread", description: { en: "Ciabatta topped with basil, tomato, olive, and melted cheese.", ko: "바질, 토마토, 올리브, 치즈를 올려 구운 치아바타입니다.", vi: "Ciabatta nướng với húng quế, cà chua, ô liu và phô mai chảy.", ja: "バジル、トマト、オリーブ、チーズをのせて焼き上げたチャバッタです。", zh: "铺上罗勒、番茄、橄榄与融化芝士烘烤而成的恰巴塔。" }, priceVnd: 85000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/basil-tomato-olive-cheese-ciabatta.png" },
   { name: { en: "Plain Ciabatta", ko: "플레인치아바타", vi: "Ciabatta plain", ja: "プレーンチャバッタ", zh: "原味恰巴塔" }, category: "artisanBread", description: { en: "Classic plain ciabatta with a crisp crust and an airy crumb.", ko: "바삭한 겉면과 폭신한 속결이 특징인 기본 치아바타입니다.", vi: "Ciabatta plain cổ điển với vỏ giòn và ruột xốp nhẹ.", ja: "カリッとした外皮とふわっとした内相が特徴のプレーンチャバッタです。", zh: "外皮酥脆、内部松软的经典原味恰巴塔。" }, priceVnd: 39000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/plain-ciabatta.png?v=20260731-2" },
   { name: { en: "Garlic Cream Cheese Baguette", ko: "갈릭크림치즈 바게트" }, category: "sweetBread", description: { en: "Crispy light baguette filled with cream cheese and baked with generous garlic sauce.", ko: "바삭하고 가벼운 바게트 사이에 크림치즈를 넣고 마늘 소스를 듬뿍 발라 구운 빵", vi: "Baguette gion nhe nhoi kem pho mai va phu nhieu sot toi roi nuong.", ja: "カリッと軽いバゲットの間にクリームチーズを入れ、ガーリックソースをたっぷり塗って焼いたパンです。", zh: "在酥脆轻盈法棍中夹入奶油芝士并涂抹大量蒜香酱烘烤而成的面包。" }, priceVnd: 55000, nutsIncluded: false, eggIncluded: true, eggWashIncluded: false, image: "images/bread-garlic-cream-cheese-baguette.png" },
   { name: { en: "Shrimp Baguette", ko: "새우바게트" }, category: "sweetBread", description: { en: "Crispy light baguette filled with savory shrimp cream cheese and baked with shrimp topping.", ko: "바삭하고 가벼운 바게트 사이에 짭짤한 감칠맛이 있는 새우크림치즈를 넣고 새우토핑을 올려 구운 빵", vi: "Baguette gion nhe nhoi kem pho mai tom man va phu topping tom roi nuong.", ja: "カリッと軽いバゲットの間に、旨みのあるエビクリームチーズを入れ、エビトッピングをのせて焼いたパンです。", zh: "在酥脆轻盈的法棍中夹入咸香鲜美的虾奶油芝士，并铺上虾配料后烘烤而成的面包。" }, priceVnd: 55000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/bread-shrimp-baguette.png?v=20260614-2", imageScale: 0.95 },
@@ -323,8 +328,8 @@ const menuData = [
   { name: { en: "Double Chocolate Muffin", ko: "더블초코머핀" }, category: "cakeMadeleine", description: { en: "Moist muffin with rich double chocolate taste.", ko: "진한 초콜릿 풍미의 촉촉한 머핀", vi: "Muffin mem am voi huong vi double socola dam da.", ja: "濃厚なチョコレート風味のしっとりマフィンです。", zh: "浓郁双重巧克力风味的湿润玛芬。" }, priceVnd: 65000, nutsIncluded: false, eggIncluded: true, image: "images/cake_muffin_match_1.png", imageScale: 0.85 },
 
   { name: { en: "Cashew Basil Pesto", ko: "캐슈바질페스토" }, category: "jamSpread", description: { en: "Fresh basil, premium Vietnamese cashew, and Spanish olive oil pesto with deep savory flavor.", ko: "신선한 생바질과 베트남 프리미엄 캐슈넛, 스페인 엑스트라 버진 올리브 오일로 만든 진하고 고소한 수제 바질페스토", vi: "Pesto basil thu cong dam vi, lam tu hung que tuoi, hat dieu cao cap Viet Nam va dau olive extra virgin Tay Ban Nha.", ja: "新鮮な生バジルとベトナム産プレミアムカシューナッツ、スペイン産エクストラバージンオリーブオイルで作った、濃厚で香ばしい自家製バジルペストです。", zh: "以新鲜罗勒、越南高端腰果和西班牙特级初榨橄榄油制作的浓郁香醇手工罗勒青酱。" }, priceVnd: 180000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/jam-basil-pesto.png" },
-  { name: { en: "Homemade Raspberry Jam", ko: "홈메이드 라즈베리잼" }, category: "jamSpread", description: { en: "Homemade raspberry jam with bright tart-sweet flavor (raspberry content about 57%, mini size available).", ko: "홈메이드 방식으로 만든 새콤달콤한 맛의 라즈베리잼 (라즈베리 함량 약 57%, 미니사이즈 55,000)", vi: "Mut raspberry thu cong vi chua ngot can bang (ty le raspberry khoang 57%, co size mini 55,000).", ja: "ホームメイド製法で作った甘酸っぱいラズベリージャム（ラズベリー含有量約57%、ミニサイズ 55,000）。", zh: "采用手工方式制作的酸甜树莓果酱（树莓含量约57%，迷你装55,000）。" }, priceVnd: 140000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/jam-raspberry.png" },
-  { name: { en: "Homemade Blueberry Jam", ko: "홈메이드 블루베리잼" }, category: "jamSpread", description: { en: "Homemade blueberry jam with rich blueberry flavor (blueberry content about 70%, mini size available).", ko: "홈메이드 방식으로 만든 블루베리 맛이 진한 블루베리잼 (블루베리 함량 약 70%, 미니사이즈 55,000)", vi: "Mut blueberry thu cong voi huong vi blueberry dam da (ty le blueberry khoang 70%, co size mini 55,000).", ja: "ホームメイド製法で作ったブルーベリーの風味が濃いブルーベリージャム（ブルーベリー含有量約70%、ミニサイズ 55,000）。", zh: "采用手工方式制作、蓝莓风味浓郁的蓝莓果酱（蓝莓含量约70%，迷你装55,000）。" }, priceVnd: 140000, nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/jam-blueberry.png" },
+  { name: { en: "Homemade Raspberry Jam", ko: "홈메이드 라즈베리잼" }, category: "jamSpread", description: { en: "Homemade raspberry jam with bright tart-sweet flavor (raspberry content about 57%).", ko: "홈메이드 방식으로 만든 새콤달콤한 맛의 라즈베리잼 (라즈베리 함량 약 57%)", vi: "Mut raspberry thu cong vi chua ngot can bang (ty le raspberry khoang 57%).", ja: "ホームメイド製法で作った甘酸っぱいラズベリージャム（ラズベリー含有量約57%）。", zh: "采用手工方式制作的酸甜树莓果酱（树莓含量约57%）。" }, priceVnd: 170000, sizes: [{ key: "large", priceVnd: 170000 }, { key: "small", priceVnd: 55000 }], nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/jam-raspberry.png" },
+  { name: { en: "Homemade Blueberry Jam", ko: "홈메이드 블루베리잼" }, category: "jamSpread", description: { en: "Homemade blueberry jam with rich blueberry flavor (blueberry content about 70%).", ko: "홈메이드 방식으로 만든 블루베리 맛이 진한 블루베리잼 (블루베리 함량 약 70%)", vi: "Mut blueberry thu cong voi huong vi blueberry dam da (ty le blueberry khoang 70%).", ja: "ホームメイド製法で作ったブルーベリーの風味が濃いブルーベリージャム（ブルーベリー含有量約70%）。", zh: "采用手工方式制作、蓝莓风味浓郁的蓝莓果酱（蓝莓含量约70%）。" }, priceVnd: 140000, sizes: [{ key: "large", priceVnd: 140000 }, { key: "small", priceVnd: 55000 }], nutsIncluded: false, eggIncluded: false, eggWashIncluded: false, image: "images/jam-blueberry.png" },
 
   { name: { en: "Dream Cashew Nut 210g", ko: "드림캐슈넛 210g" }, category: "cashewProduct", description: { en: "Premium dream cashew nuts.", ko: "프리미엄 드림 캐슈넛", vi: "Hat dieu Dream cao cap.", ja: "プレミアムドリームカシューナッツ。", zh: "精品Dream腰果。" }, priceVnd: 150000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/dream-cashew-nut-210g.png?v=20260623-4", imageScale: 0.92 },
   { name: { en: "NURIDAL Cashew Nut 70g", ko: "NURIDAL 캐슈넛 70g" }, category: "cashewProduct", description: { en: "NURIDAL roasted and salted cashew nuts.", ko: "누리달 로스티드 솔티드 캐슈넛", vi: "Hat dieu rang muoi NURIDAL.", ja: "NURIDAL ロースト＆ソルト カシューナッツ。", zh: "NURIDAL 烘烤加盐腰果。" }, priceVnd: 79000, nutsIncluded: true, eggIncluded: false, eggWashIncluded: false, image: "images/70g.png?v=20260623-2" },
@@ -492,6 +497,24 @@ function getFlavorLabel(flavor) {
   return labels?.[activeLanguage] ?? flavor;
 }
 
+function getSizeLabel(sizeKey) {
+  const sizeI18n = {
+    large: { en: "Large", ko: "라지", vi: "Lớn", ja: "ラージ", zh: "大份" },
+    small: { en: "Small", ko: "스몰", vi: "Nhỏ", ja: "スモール", zh: "小份" },
+  };
+  const labels = sizeI18n[sizeKey];
+  return labels?.[activeLanguage] ?? sizeKey;
+}
+
+function getMenuUnitPrice(menu, size) {
+  if (!menu) return 0;
+  if (size && Array.isArray(menu.sizes)) {
+    const matched = menu.sizes.find((entry) => entry.key === size);
+    if (matched) return matched.priceVnd;
+  }
+  return menu.priceVnd;
+}
+
 function getStockLabel(status) {
   const labels = {
     in_stock: {
@@ -523,8 +546,9 @@ function findMenuByKey(menuKey) {
   return menuData.find((menu) => menu.menuKey === menuKey);
 }
 
-function getCartLineKey(menuKey, flavor) {
-  return flavor ? `${menuKey}::${flavor}` : menuKey;
+function getCartLineKey(menuKey, flavor, size) {
+  const base = flavor ? `${menuKey}::${flavor}` : menuKey;
+  return size ? `${base}::${size}` : base;
 }
 
 function loadCart() {
@@ -551,32 +575,32 @@ function getCartTotalVnd() {
   return cartItems.reduce((sum, item) => {
     const menu = findMenuByKey(item.menuKey);
     if (!menu) return sum;
-    return sum + menu.priceVnd * item.quantity;
+    return sum + getMenuUnitPrice(menu, item.size) * item.quantity;
   }, 0);
 }
 
-function addToCart(menuKey, flavor = null) {
+function addToCart(menuKey, flavor = null, size = null) {
   const stockStatus = normalizeStockStatus(inventoryStatusByKey.get(menuKey));
   if (stockStatus === "sold_out") return;
 
-  const lineKey = getCartLineKey(menuKey, flavor);
-  const existing = cartItems.find((item) => getCartLineKey(item.menuKey, item.flavor) === lineKey);
+  const lineKey = getCartLineKey(menuKey, flavor, size);
+  const existing = cartItems.find((item) => getCartLineKey(item.menuKey, item.flavor, item.size) === lineKey);
   if (existing) {
     existing.quantity += 1;
   } else {
-    cartItems.push({ menuKey, flavor, quantity: 1 });
+    cartItems.push({ menuKey, flavor, size, quantity: 1 });
   }
   saveCart();
   renderCart();
   updateCartFab();
 }
 
-function setCartQuantity(menuKey, flavor, quantity) {
-  const lineKey = getCartLineKey(menuKey, flavor);
-  const item = cartItems.find((entry) => getCartLineKey(entry.menuKey, entry.flavor) === lineKey);
+function setCartQuantity(menuKey, flavor, size, quantity) {
+  const lineKey = getCartLineKey(menuKey, flavor, size);
+  const item = cartItems.find((entry) => getCartLineKey(entry.menuKey, entry.flavor, entry.size) === lineKey);
   if (!item) return;
   if (quantity <= 0) {
-    cartItems = cartItems.filter((entry) => getCartLineKey(entry.menuKey, entry.flavor) !== lineKey);
+    cartItems = cartItems.filter((entry) => getCartLineKey(entry.menuKey, entry.flavor, entry.size) !== lineKey);
   } else {
     item.quantity = quantity;
   }
@@ -609,10 +633,13 @@ function buildOrderText() {
     const menu = findMenuByKey(item.menuKey);
     if (!menu) return null;
     let label = getMenuDisplayName(menu);
+    if (item.size) {
+      label += ` - ${getSizeLabel(item.size)}`;
+    }
     if (item.flavor) {
       label += ` - ${getFlavorLabel(item.flavor)}`;
     }
-    const lineTotal = menu.priceVnd * item.quantity;
+    const lineTotal = getMenuUnitPrice(menu, item.size) * item.quantity;
     return `${index + 1}. ${label} ${formatCartQuantity(item.quantity)} · ${formatVnd(lineTotal)}`;
   }).filter(Boolean);
 
@@ -710,11 +737,12 @@ function renderCart() {
 
     const meta = document.createElement("p");
     meta.className = "cart-item__meta";
-    if (item.flavor) {
-      meta.textContent = `${getFlavorIcon(item.flavor)} ${getFlavorLabel(item.flavor)} · ${formatVnd(menu.priceVnd)}`;
-    } else {
-      meta.textContent = formatVnd(menu.priceVnd);
-    }
+    const unitPrice = getMenuUnitPrice(menu, item.size);
+    const metaParts = [];
+    if (item.size) metaParts.push(getSizeLabel(item.size));
+    if (item.flavor) metaParts.push(`${getFlavorIcon(item.flavor)} ${getFlavorLabel(item.flavor)}`);
+    metaParts.push(formatVnd(unitPrice));
+    meta.textContent = metaParts.join(" · ");
 
     info.append(name, meta);
 
@@ -726,7 +754,7 @@ function renderCart() {
     decreaseBtn.className = "cart-item__qty-btn";
     decreaseBtn.setAttribute("aria-label", t("cartDecrease"));
     decreaseBtn.textContent = "−";
-    decreaseBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, item.quantity - 1));
+    decreaseBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, item.size, item.quantity - 1));
 
     const qty = document.createElement("span");
     qty.className = "cart-item__qty";
@@ -737,13 +765,13 @@ function renderCart() {
     increaseBtn.className = "cart-item__qty-btn";
     increaseBtn.setAttribute("aria-label", t("cartIncrease"));
     increaseBtn.textContent = "+";
-    increaseBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, item.quantity + 1));
+    increaseBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, item.size, item.quantity + 1));
 
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "cart-item__remove";
     removeBtn.textContent = t("cartRemove");
-    removeBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, 0));
+    removeBtn.addEventListener("click", () => setCartQuantity(item.menuKey, item.flavor, item.size, 0));
 
     controls.append(decreaseBtn, qty, increaseBtn, removeBtn);
     row.append(info, controls);
@@ -947,7 +975,14 @@ function renderMenus() {
         flavorContainer.append(chip);
       });
     }
-    card.querySelector(".menu-card__price").textContent = formatVnd(menu.priceVnd);
+    const priceElement = card.querySelector(".menu-card__price");
+    const sizes = Array.isArray(menu.sizes) ? menu.sizes : [];
+    const hasSizes = sizes.length > 0;
+    let selectedSize = hasSizes ? sizes[0].key : null;
+    const updateDisplayedPrice = () => {
+      priceElement.textContent = formatVnd(getMenuUnitPrice(menu, selectedSize));
+    };
+    updateDisplayedPrice();
     allergyFields[0].innerHTML = `NUTS <span class="allergy-status ${menu.nutsIncluded ? "is-included" : "is-excluded"}" aria-label="${toIncludedText(menu.nutsIncluded)}">${getAllergyEmoji(menu.nutsIncluded)}</span>`;
     allergyFields[1].innerHTML = `EGG <span class="allergy-status ${menu.eggIncluded ? "is-included" : "is-excluded"}" aria-label="${toIncludedText(menu.eggIncluded)}">${getAllergyEmoji(menu.eggIncluded)}</span>`;
     const hasEggWash = menu.eggWashIncluded ?? false;
@@ -955,7 +990,8 @@ function renderMenus() {
 
     const flavorSelect = card.querySelector(".menu-card__flavor-select");
     const addButton = card.querySelector(".menu-card__add-btn");
-    if (Array.isArray(menu.flavors) && menu.flavors.length > 0 && flavorSelect) {
+    const hasFlavors = Array.isArray(menu.flavors) && menu.flavors.length > 0;
+    if (hasFlavors && flavorSelect) {
       flavorSelect.hidden = false;
       flavorSelect.setAttribute("aria-label", t("cartFlavorLabel"));
       flavorSelect.innerHTML = "";
@@ -964,6 +1000,20 @@ function renderMenus() {
         option.value = flavor;
         option.textContent = `${getFlavorIcon(flavor)} ${getFlavorLabel(flavor)}`;
         flavorSelect.append(option);
+      });
+    } else if (hasSizes && flavorSelect) {
+      flavorSelect.hidden = false;
+      flavorSelect.setAttribute("aria-label", t("cartSizeLabel"));
+      flavorSelect.innerHTML = "";
+      sizes.forEach((size) => {
+        const option = document.createElement("option");
+        option.value = size.key;
+        option.textContent = `${getSizeLabel(size.key)} · ${formatVnd(size.priceVnd)}`;
+        flavorSelect.append(option);
+      });
+      flavorSelect.addEventListener("change", () => {
+        selectedSize = flavorSelect.value;
+        updateDisplayedPrice();
       });
     } else if (flavorSelect) {
       flavorSelect.hidden = true;
@@ -975,8 +1025,9 @@ function renderMenus() {
       addButton.disabled = stockStatus === "sold_out";
       addButton.title = stockStatus === "sold_out" ? t("cartSoldOutHint") : "";
       addButton.addEventListener("click", () => {
-        const flavor = flavorSelect && !flavorSelect.hidden ? flavorSelect.value : null;
-        addToCart(menu.menuKey, flavor);
+        const flavor = hasFlavors && flavorSelect ? flavorSelect.value : null;
+        const size = hasSizes && flavorSelect ? flavorSelect.value : null;
+        addToCart(menu.menuKey, flavor, size);
         showCartToast(t("cartAdded"));
       });
     }
